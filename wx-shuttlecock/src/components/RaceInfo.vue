@@ -2,8 +2,8 @@
 	<div class="raceInfo">
 		<div class="thumb-box">
 			<img class="theme-icon" src="/static/images/timg.png" alt="">
-			<img class="recomment" src="/static/images/recommend.png" alt="">
-		</div>
+<!-- 			<img class="recomment" src="/static/images/recommend.png" alt="">
+ -->		</div>
 		<div class="info-box">
 			<div class="title">
 				2019杭州滨江区羽毛球比赛
@@ -37,8 +37,8 @@
 		.thumb-box{
 			height:@icon-height;
 			width:@icon-height;
-			position:relative;
-
+			// position:relative;
+			// z-index:0;
 			float:left;
 			.theme-icon{
 				width:160rpx;
@@ -47,9 +47,7 @@
 				box-sizing:content-box;
 			}
 			.recomment{
-				position: absolute;
-				top:10rpx;
-				left:10rpx;
+				float:left;
 				width:100rpx;
 				height:100rpx;
 			}
