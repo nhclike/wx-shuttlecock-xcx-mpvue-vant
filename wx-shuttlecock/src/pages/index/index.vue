@@ -75,10 +75,8 @@ export default {
 <style scoped lang="less" rel="stylesheet/less">
 @calendar_size:80rpx;
 @header_height:180rpx;
-.navigator-hover{
-  background-color:#fff;
-  opacity: 1;
-}
+
+
 .header-box{
   position:fixed;
   height:@header_height;
@@ -91,6 +89,7 @@ export default {
       height:@calendar_size;
       width:@calendar_size;
       float:left;
+      background:#fff;
       img{
         width:60rpx;
         height:60rpx;
