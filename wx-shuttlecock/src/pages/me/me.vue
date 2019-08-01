@@ -32,7 +32,6 @@
 <script>
   import {get,post,showSuccess,showModal} from '@/util'
   export default {
-
     data () {
       return {
         userinfo: {

@@ -2,8 +2,8 @@
   "pages": [
     "pages/index/main",
     "pages/raceCalendar/main",
-    "pages/me/main"
-
+    "pages/me/main",
+    "pages/detail/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
