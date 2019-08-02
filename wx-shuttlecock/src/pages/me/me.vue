@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <div class="login-box">
-      <img class="login-icon" src="/static/images/userLogo.png" alt="">
-      <div class="login-wrapper">
-              <van-cell title="登录/注册" is-link size="large" label="登录同步更多信息" />
+      <img class="login-icon" :src="userinfo.avatarUrl" alt="">
+      <div class="login-wrapper" @click="login">
+              <van-cell :title="userinfo.nickName" is-link size="large" :label="labelInfo" />
       </div>
     </div>
     <div class="tabbar">
@@ -38,9 +38,10 @@
       return {
         userinfo: {
           avatarUrl: '/static/images/unlogin.png',
-          nickName: '未登录'
+          nickName: '登录/注册'
         },
-        active: 0
+        active: 0,
+        labelInfo:'登录同步更多信息'
       }
     },
     computed:{
@@ -52,11 +53,39 @@
 
     },
     mounted () {
+
       console.log(this.openId+"------------openId");
+    },
+    onLoad: function() {
+      // 查看是否授权
+      wx.getSetting({
+        success (res){
+          if (res.authSetting['scope.userInfo']) {
+            // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+            wx.getUserInfo({
+              success: function(res) {
+                console.log(res.userInfo)
+              }
+            })
+          }
+        }
+      })
     },
     methods: {
       onChange (event) {
           console.log(event.detail);
+      },
+      login () {
+        let self=this;
+        wx.getUserInfo({
+          success: function(res) {
+            let userInfo = res.userInfo;
+            console.log(userInfo);
+            self.userinfo.avatarUrl=userInfo.avatarUrl;
+            self.userinfo.nickName=userInfo.nickName;
+            self.labelInfo="";
+          }
+        })
       },
       ...mapMutations({
         setOpenId:'SET_OPEN_ID'
