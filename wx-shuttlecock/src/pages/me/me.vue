@@ -31,6 +31,8 @@
 
 <script>
   import {get,post,showSuccess,showModal} from '@/util'
+  import { mapGetters, mapMutations } from 'vuex'
+
   export default {
     data () {
       return {
@@ -41,13 +43,24 @@
         active: 0
       }
     },
+    computed:{
+      ...mapGetters([
+        'openId'
+      ])
+    },
     created () {
 
+    },
+    mounted () {
+      console.log(this.openId+"------------openId");
     },
     methods: {
       onChange (event) {
           console.log(event.detail);
-      }
+      },
+      ...mapMutations({
+        setOpenId:'SET_OPEN_ID'
+      })
     }
   }
 </script>

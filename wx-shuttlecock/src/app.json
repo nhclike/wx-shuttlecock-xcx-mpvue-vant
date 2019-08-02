@@ -19,15 +19,14 @@
   "plugins": {
       "calendar": {
          "version": "1.1.0",
-          "provider": "wx92c68dae5a8bb046"   
-      }  
+          "provider": "wx92c68dae5a8bb046"
+      }
   },
   "tabBar": {
     "color": "#515151",
     "backgroundColor": "#fafafa",
     "selectedColor": "#d81e06",
     "borderStyle": "white",
-
     "list": [{
       "text": "赛事",
       "pagePath": "pages/index/main",
