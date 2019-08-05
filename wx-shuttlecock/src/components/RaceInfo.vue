@@ -1,7 +1,7 @@
 <template>
 	<a :href="detailUrl">
 		<div class="raceInfo">
-			<div class="thumb-box" :style="{backgroundImage:'url(/static/images/timg.png)',backgroundSize:'180rpx 180rpx'}">
+			<div class="thumb-box" :style="{backgroundImage:'url(https://6d70-mpvue-test-demo-xiq0s-1259052527.tcb.qcloud.la/timg.png?sign=79fc251e301596ed923efd067585879c&t=1564976815)',backgroundSize:'180rpx 180rpx'}">
 				<img class="recomment" src="/static/images/recommend.png" alt="">
 			</div>
 			<div class="info-box">

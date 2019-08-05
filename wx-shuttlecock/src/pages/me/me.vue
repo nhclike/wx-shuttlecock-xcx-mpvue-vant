@@ -2,7 +2,7 @@
   <div class="container">
     <div class="login-box">
       <img class="login-icon" :src="userinfo.avatarUrl" alt="">
-      <div class="login-wrapper" @click="login">
+      <div class="login-wrapper" @click="getWxUserInfo">
               <van-cell :title="userinfo.nickName" is-link size="large" :label="labelInfo" />
       </div>
       <button v-show="labelInfo!=''" open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">获取授权</button>
@@ -28,12 +28,19 @@
         <van-cell title="常用报名信息" is-link></van-cell>
       </van-cell-group>
     </div>
+    <div>
+      <button @click="testDouBan">接口豆瓣测试</button>
+      <button @click="testLocalhost">接口本地测试</button>
+      <button @click="testApi">api接口测试</button>
+
+    </div>
   </div>
 </template>
 
 <script>
   import {get,post,showSuccess,showModal} from '@/util'
   import { mapGetters, mapMutations } from 'vuex'
+  import { apiTest } from "@/api/me"
 
   export default {
     data () {
@@ -55,24 +62,41 @@
 
     },
     mounted () {
-
+      this.isAuthUserInfo();
       console.log(this.openId+"------------openId");
     },
     onLoad: function() {
-      let self=this;
-      // 查看是否授权
-      wx.getSetting({
-        success (res){
-          if (res.authSetting['scope.userInfo']) {
-            // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-            self.login();
-          }
-        }
-      })
+      this.isAuthUserInfo();
+
     },
     methods: {
       onChange (event) {
           console.log(event.detail);
+      },
+      isAuthUserInfo () {
+        let self=this;
+        // 查看是否授权
+        wx.getSetting({
+          success (res){
+            if (res.authSetting['scope.userInfo']) {
+              // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+              self.getWxUserInfo();
+            }
+            else{
+              //授权获取用户信息;并不会弹出选择框
+              wx.authorize({
+                scope:'scope.getUserInfo',
+                success (res) {
+                  //
+                  console.log(res)
+                },
+                fial (err) {
+                  console.log(err)
+                }
+              })
+            }
+          }
+        })
       },
       //页面没有授权首先要弹出授权页面
       onGotUserInfo (e) {
@@ -85,12 +109,12 @@
         }
         else{
           console.log("用户点击了拒绝");
-          
+
         }
         
       },
-      //授权后登陆
-      login () {
+      //授权后获取用户信息
+      getWxUserInfo () {
         let self=this;
         wx.getUserInfo({
           success: function(res) {
@@ -109,7 +133,35 @@
       ...mapMutations({
         setOpenId:'SET_OPEN_ID',
         setUserInfo:'SET_USER_INFO'
-      })
+      }),
+      testDouBan () {
+        wx.request({
+              url: 'https://douban.uieee.com/v2/movie/in_theaters',
+              method: 'GET',
+              header:{
+                   "content-type":"json"
+              },
+              data: {
+                  start: 0,
+                  count: 4,
+                  city: '杭州'
+              },
+              success: res => {
+                  console.log(res)
+              },
+              fail: () => {},
+              complete: () => {}
+          });  
+      },
+      async testLocalhost () {
+        let str= await get("/demo/hello");
+        console.log(str);
+      },
+      testApi () {
+        let val= apiTest();
+        console.log(val);
+        
+      }
     }
   }
 </script>
