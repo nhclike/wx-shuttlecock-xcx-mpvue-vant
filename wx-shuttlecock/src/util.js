@@ -2,11 +2,11 @@
 import config from './config'
 
 // http get工具函数 获取数据
-export function get (url, data) {
-  return request(url, 'GET', data)
+export function get (url, data,header) {
+  return request(url, 'GET', data,header)
 }
-export function post (url, data) {
-  return request(url, 'POST', data)
+export function post (url, data,header) {
+  return request(url, 'POST', data,header)
 }
 
 function request (url, method, data, header = {}) {

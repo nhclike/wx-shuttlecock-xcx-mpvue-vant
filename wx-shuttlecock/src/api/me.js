@@ -1,7 +1,6 @@
 import {get,post} from '@/util'
+const HEADER_JSON={"content-type":"json"};
 
-export async function  apiTest () {
-   let str= await get("/demo/hello");
-   console.log(str);
-   return str;      
+export async function  apiTest (data) {
+   return await get("/",data,HEADER_JSON);     
 }

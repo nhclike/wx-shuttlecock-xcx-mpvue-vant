@@ -154,12 +154,16 @@
           });  
       },
       async testLocalhost () {
-        let str= await get("/demo/hello");
-        console.log(str);
+        let obj= await get("/",{},{
+                   "content-type":"json"
+              });
+        console.log(obj);
       },
       testApi () {
-        let val= apiTest();
-        console.log(val);
+        apiTest().then((res)=>{
+          console.log(res);
+        });
+        
         
       }
     }
