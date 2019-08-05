@@ -51,7 +51,7 @@
 
 </script>
 <style scoped lang="less">
-  @import "./../common/css/variable.less";
+  @import "./../common/less/variable.less";
 	@icon-height:180rpx;
 	.raceInfo{
 		width:100%;

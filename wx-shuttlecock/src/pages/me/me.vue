@@ -5,6 +5,8 @@
       <div class="login-wrapper" @click="login">
               <van-cell :title="userinfo.nickName" is-link size="large" :label="labelInfo" />
       </div>
+      <button v-show="labelInfo!=''" open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">获取授权</button>
+
     </div>
     <div class="tabbar">
       <van-tabbar
@@ -57,16 +59,13 @@
       console.log(this.openId+"------------openId");
     },
     onLoad: function() {
+      let self=this;
       // 查看是否授权
       wx.getSetting({
         success (res){
           if (res.authSetting['scope.userInfo']) {
             // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-            wx.getUserInfo({
-              success: function(res) {
-                console.log(res.userInfo)
-              }
-            })
+            self.login();
           }
         }
       })
@@ -75,20 +74,41 @@
       onChange (event) {
           console.log(event.detail);
       },
+      //页面没有授权首先要弹出授权页面
+      onGotUserInfo (e) {
+        console.log(e.mp.detail.errMsg)
+        console.log(e.mp.detail.userInfo)
+        console.log(e.mp.detail.rawData)
+        if(e.mp.detail.userInfo){
+          console.log("用户点击了允许");
+          this.setInfo (this,e.mp.detail.userInfo);
+        }
+        else{
+          console.log("用户点击了拒绝");
+          
+        }
+        
+      },
+      //授权后登陆
       login () {
         let self=this;
         wx.getUserInfo({
           success: function(res) {
             let userInfo = res.userInfo;
             console.log(userInfo);
-            self.userinfo.avatarUrl=userInfo.avatarUrl;
-            self.userinfo.nickName=userInfo.nickName;
-            self.labelInfo="";
+            self.setInfo (self,userInfo);
           }
         })
       },
+      setInfo (self,userInfo) {
+        self.userinfo.avatarUrl=userInfo.avatarUrl;
+        self.userinfo.nickName=userInfo.nickName;
+        self.labelInfo="";
+        self.setUserInfo(userInfo);
+      },
       ...mapMutations({
-        setOpenId:'SET_OPEN_ID'
+        setOpenId:'SET_OPEN_ID',
+        setUserInfo:'SET_USER_INFO'
       })
     }
   }
@@ -102,6 +122,7 @@
       .login-icon{
         width:120rpx;
         height:120rpx;
+        border-radius:60rpx;
         float: left;
       }
       .login-wrapper{

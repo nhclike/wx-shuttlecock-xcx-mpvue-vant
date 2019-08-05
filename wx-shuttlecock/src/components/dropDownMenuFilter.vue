@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "./../common/css/variable.less";
+  @import "./../common/less/variable.less";
 
   .dark-bg{
     background: rgba(108,108,108,0.3);
