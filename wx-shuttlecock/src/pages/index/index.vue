@@ -2,19 +2,13 @@
   <div>
     <div class="header-box">
       <div class="search-box">
-        <div class="calendar-wrapper">
+       <!--  <div class="calendar-wrapper">
           <a href="/pages/raceCalendar/main">
             <img src="/static/images/calendar.png" alt="">
           </a>
-        </div>
+        </div> -->
         <div class="search-wrapper">
-          <van-search 
-          :value="searchWord" 
-          placeholder="搜索比赛/地区" 
-          input-class="search-input-class"
-          field-class="search-field-class"
-          custom-class="search-custom-class"
-          />
+          <Search></Search>
         </div>
       </div>
       
@@ -49,20 +43,23 @@
 <script>
 import RaceInfo from "@/components/raceInfo"
 import MenuFilter from "@/components/dropDownMenuFilter"
+import Search from "@/components/search"
+
 export default {
   data () {
     return {
-      searchWord:''
+      searchWord:'',
     }
   },
 
   components: {
     RaceInfo,
-    MenuFilter
+    MenuFilter,
+    Search
   },
 
   methods: {
-    
+   
   },
 
   created () {
@@ -85,22 +82,22 @@ export default {
   .search-box{
     position:relative;
     z-index:99;
-    .calendar-wrapper{
-      height:@calendar_size;
-      width:@calendar_size;
-      float:left;
-      background:#fff;
-      img{
-        width:60rpx;
-        height:60rpx;
-        margin: 10rpx;
-      }
-    }
+    // .calendar-wrapper{
+    //   height:@calendar_size;
+    //   width:@calendar_size;
+    //   float:left;
+    //   background:#fff;
+    //   img{
+    //     width:60rpx;
+    //     height:60rpx;
+    //     margin: 10rpx;
+    //   }
+    // }
     .search-wrapper{
       width:100%;
       height:@calendar_size;
       box-sizing:border-box;
-      padding-left:@calendar_size;
+      // padding-left:@calendar_size;
     }
   }
 }

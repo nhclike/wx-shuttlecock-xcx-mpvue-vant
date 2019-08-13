@@ -6,6 +6,5 @@ Vue.config.productionTip = false;
 App.mpType = 'app';
 
 const app = new Vue(App);
-
 Vue.prototype.$store = store;
 app.$mount();
