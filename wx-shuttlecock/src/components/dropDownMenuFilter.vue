@@ -4,8 +4,8 @@
 
     </div>
     <div class="nav">
-    	<div class="nav-son" v-for="(item,index) in titles" :key="index">
-    		<div class="content" @click="chooseNav(index)">{{item}}</div>
+    	<div class="nav-son" v-for="(item,index) in titles" :key="index" @click="chooseNav(index)">
+    		<div class="content" >{{item}}</div>
     		<div class="icon" :class="[curTitleIndex==index?'icon-select':'']"></div>
     	</div>
     	<!-- <div class="nav-son">
