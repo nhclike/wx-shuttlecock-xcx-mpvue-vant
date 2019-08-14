@@ -32,10 +32,16 @@ export default {
       console.log(d);
       console.log(d.getFullYear());
       console.log(d.getMonth()+1);
+      let year=d.getFullYear();
+      let month=d.getMonth()+1;
+      let time=year+"-"+month;
+      this.$emit('onConfirm',time);
 
     },
     onCancel () {
       console.log("onCancel");
+      this.$emit('onCancel')
+
 
     }
   }

@@ -4,11 +4,11 @@
 
     </div>
     <div class="nav">
-    	<div class="nav-son">
-    		<div class="content" @click="chooseNav('type')">分类</div>
-    		<div class="icon" :class="[curTitle=='type'?'icon-select':'']"></div>
+    	<div class="nav-son" v-for="(item,index) in titles" :key="index">
+    		<div class="content" @click="chooseNav(index)">{{item}}</div>
+    		<div class="icon" :class="[curTitleIndex==index?'icon-select':'']"></div>
     	</div>
-    	<div class="nav-son">
+    	<!-- <div class="nav-son">
     		<div class="content" @click="chooseNav('date')">日期</div>
     		<div class="icon" :class="[curTitle=='date'?'icon-select':'']"></div>
     	</div>
@@ -19,9 +19,9 @@
     	<div class="nav-son">
     		<div class="content" @click="chooseNav('filter')">筛选</div>
     		<div class="icon" :class="[curTitle=='filter'?'icon-select':'']"></div>
-    	</div>
+    	</div> -->
     </div>
-    <div class="nav-content type" v-show="curTitle=='type'">
+    <div class="nav-content type" v-show="curTitleIndex==0">
     	<div v-for="(item,index) in types" class="type-item"
           :key="index"
           @click="chooseType(index)"
@@ -29,10 +29,13 @@
     		{{item}}
     	</div>
     </div>
-    <div class="nav-content" v-show="curTitle=='date'">
-      <Datetime-Picker></Datetime-Picker> 
+    <div class="nav-content" v-show="curTitleIndex==1">
+      <Datetime-Picker 
+        @onConfirm="datetimeConfirm"
+        @onCancel="datetimeCancel">
+      </Datetime-Picker> 
     </div>
-    <div class="nav-content" v-show="curTitle=='area'">
+    <div class="nav-content" v-show="curTitleIndex==2">
       <div class="area-wrapper">
         <div v-for="(item,index) in areaNames" class="area-item"
           :key="index" 
@@ -42,7 +45,7 @@
         </div> 
       </div>   
     </div>
-     <div class="nav-content" v-show="curTitle=='filter'">
+     <div class="nav-content" v-show="curTitleIndex==3">
       <div class="filter-wrapper">
         <div class="small-title">筛选</div>
         <div class="status-wrapper">
@@ -65,9 +68,11 @@ export default {
   props: ['text'],
   data(){
   	return {
+      curTitleIndex:-1,
+      titles:["分类","日期","地区","筛选"],
   		types:["不限","俱乐部赛事","学校赛事","公司赛事","其他"],
       curSelectType:0,
-      curTitle:'',
+      
       darkBg:false,
       areaNames:["不限","上海","重庆","杭州","上海","武汉","天津","南京","南昌","广州","深圳","成都","长沙"],
       curSelectArea:0,
@@ -83,21 +88,57 @@ export default {
     //选择比赛类型
     chooseType (index) {
       this.curSelectType=index;
+      if(index==0){
+        this.chooseItem("类型");
+      }
+      else{
+        this.chooseItem(this.types[index]);
+      }
     },
     //选择比赛区域
     chooseArea (index) {
       this.curSelectArea=index;
+      if(index==0){
+        this.chooseItem("区域");
+      }
+      else{
+        this.chooseItem(this.areaNames[index]);
+      }
     },
     //选择比赛状态
     chooseStatus (index) {
       this.curSelectStatus=index;
+      if(index==0){
+        this.chooseItem("筛选");
+      }
+      else{
+        this.chooseItem(this.status[index]);
+      }
     },
-    chooseNav (title) {
-      this.curTitle=title;
+    //确定日期选择
+    datetimeConfirm (val) {
+      console.log(val);
+      this.chooseItem(val);
+    },
+    
+    //取消日期选择--选择不限
+    datetimeCancel () {
+      console.log("datetimeCancel");
+      this.chooseItem("日期");
+
+    },
+    chooseItem (val) {
+      this.titles[this.curTitleIndex]=val;
+      this.hideNavContent();
+    },
+    //选择导航菜单项
+    chooseNav (index) {
+      this.curTitleIndex=index;
       this.darkBg=true;
     },
+    //隐藏导航菜单项
     hideNavContent () {
-      this.curTitle='';
+      this.curTitleIndex=-1;
       this.darkBg=false;
     }
   }
