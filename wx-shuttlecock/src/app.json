@@ -1,8 +1,9 @@
 {
   "pages": [
     "pages/index/main",
-    "pages/raceCalendar/main",
+    "pages/enrolled/main",
     "pages/me/main",
+    "pages/raceCalendar/main",
     "pages/detail/main"
   ],
   "window": {
@@ -25,13 +26,18 @@
   "tabBar": {
     "color": "#515151",
     "backgroundColor": "#fafafa",
-    "selectedColor": "#d81e06",
+    "selectedColor": "#2592FC",
     "borderStyle": "white",
     "list": [{
       "text": "赛事",
       "pagePath": "pages/index/main",
       "iconPath": "static/tabs/index.png",
       "selectedIconPath": "static/tabs/index-active.png"
+    },{
+      "text": "已报名",
+      "pagePath": "pages/enrolled/main",
+      "iconPath": "static/tabs/enrolled.png",
+      "selectedIconPath": "static/tabs/enrolled-active.png"
     }, {
       "text": "个人中心",
       "pagePath": "pages/me/main",
@@ -44,6 +50,11 @@
       "pagePath": "pages/index/main",
       "icon": "static/tabs/index.png",
       "activeIcon": "static/tabs/index-active.png"
+    },{
+      "name": "已报名",
+      "pagePath": "pages/enrolled/main",
+      "icon": "static/tabs/enrolled.png",
+      "activeIcon": "static/tabs/enrolled-active.png"
     }, {
       "name": "我的",
       "pagePath": "pages/me/main",

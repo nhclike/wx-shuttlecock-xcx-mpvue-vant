@@ -71,7 +71,7 @@ export default {
 
 <style scoped lang="less" rel="stylesheet/less">
 @calendar_size:80rpx;
-@header_height:180rpx;
+@header_height:170rpx;
 
 
 .header-box{
@@ -105,9 +105,9 @@ export default {
   width:100%;
   height:100%;
   box-sizing:border-box;
-  padding-top: @header_height;
+  padding-top: @header_height+10rpx;
   overflow: hidden;
-
+  background:#ddd;
 }
 
 </style>
