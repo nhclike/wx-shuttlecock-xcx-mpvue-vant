@@ -1,12 +1,6 @@
 <template>
   <div>
-  
-    <div>
-      <RaceDetail></RaceDetail>  
-    </div>
-
-
-
+    <RaceDetail></RaceDetail> 
     <van-goods-action>
       <van-goods-action-icon
         icon="like-o"
@@ -34,29 +28,35 @@
         @click="onClickButton"
       />
     </van-goods-action>
+    <EnrollType :show=showEnrollType></EnrollType>
   </div>
 </template>
 
 <script>
-import RaceDetail from "@/components/RaceDetail"
+  import RaceDetail from "@/components/RaceDetail"
+  import EnrollType from "@/components/enrollType"
+
   export default {
     data () {
     	return {
-    		
+    		showEnrollType:false
     	}
     },
     components:{
-      RaceDetail
+      RaceDetail,
+      EnrollType
     },
     methods: {
       onClickIcon () {
 
       },
       onClickButton () {
-
+         
+          this.showEnrollType=true;
       }
     }
   }
+  
 </script>
 
 <style scoped lang="less" rel="stylesheet/less">
