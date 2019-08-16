@@ -72,8 +72,6 @@ export default {
 <style scoped lang="less" rel="stylesheet/less">
 @calendar_size:80rpx;
 @header_height:170rpx;
-
-
 .header-box{
   position:fixed;
   height:@header_height;

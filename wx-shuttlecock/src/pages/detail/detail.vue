@@ -28,7 +28,7 @@
         @click="onClickButton"
       />
     </van-goods-action>
-    <EnrollType :show=showEnrollType></EnrollType>
+    <EnrollType :show=showEnrollType @onClose=closeEnrollType></EnrollType>
   </div>
 </template>
 
@@ -53,6 +53,10 @@
       onClickButton () {
          
           this.showEnrollType=true;
+      },
+      closeEnrollType () {
+          this.showEnrollType=false;
+
       }
     }
   }
@@ -63,4 +67,5 @@
 .van-goods-action{
   background-color:#ddd;
 }
+
 </style>
