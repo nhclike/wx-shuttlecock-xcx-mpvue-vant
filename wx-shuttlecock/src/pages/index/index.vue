@@ -70,6 +70,8 @@ export default {
 </script>
 
 <style scoped lang="less" rel="stylesheet/less">
+  @import "./../../common/less/variable.less";
+
 @calendar_size:80rpx;
 @header_height:170rpx;
 .header-box{
@@ -105,7 +107,7 @@ export default {
   box-sizing:border-box;
   padding-top: @header_height+10rpx;
   overflow: hidden;
-  background:#ddd;
+  background:@bg-color;
 }
 
 </style>
