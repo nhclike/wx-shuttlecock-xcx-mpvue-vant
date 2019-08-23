@@ -1,12 +1,10 @@
 <template>
   <div class="container">
     <div class="login-box">
-      <img class="login-icon" :src="userinfo.avatarUrl" alt="">
+      <img class="login-icon" :src="userInfo.avatarUrl" alt="">
       <div class="login-wrapper" @click="getWxUserInfo">
-              <van-cell :title="userinfo.nickName" is-link size="large" :label="labelInfo" />
+        <van-cell :title="userInfo.nickName" is-link size="large" :label="labelInfo" />
       </div>
-      <button v-show="labelInfo!=''" open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">获取授权</button>
-
     </div>
     <div class="tabbar">
       <van-tabbar
@@ -30,9 +28,9 @@
     </div>
     <div>
       <button @click="testDouBan">接口豆瓣测试</button>
-      <button @click="testLocalhost">接口本地测试</button>
-      <button @click="testApi">api接口测试</button>
-
+      <button @click="testWx">wx接口测试</button>
+      <button @click="testFlyio">flyio接口测试</button>
+      <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">微信手机号授权登陆</button>
     </div>
   </div>
 </template>
@@ -40,99 +38,50 @@
 <script>
   import {get,post,showSuccess,showModal} from '@/util'
   import { mapGetters, mapMutations } from 'vuex'
-  import { apiTest } from "@/api/me"
+  import { apiTest } from "@/api/wx"
 
   export default {
     data () {
       return {
-        userinfo: {
-          avatarUrl: '/static/images/unlogin.png',
-          nickName: '登录/注册'
-        },
         active: 0,
-        labelInfo:'登录同步更多信息'
+        labelInfo:'请绑定手机号'
       }
     },
     computed:{
       ...mapGetters([
-        'openId'
+        'openId',
+        'userInfo'
       ])
     },
     created () {
 
     },
     mounted () {
-      this.isAuthUserInfo();
-      console.log(this.openId+"------------openId");
+      console.log(this.openId+"------------openId------------");
     },
     onLoad: function() {
-      this.isAuthUserInfo();
-
+      console.log("------------onLoad-----------");
+      console.log("------------userInfo------------");
+      console.log(this.userInfo);
+      if(!this.userInfo.nickName){
+          let url="/pages/authUserInfo/main";
+          wx.redirectTo({ url })
+      }
     },
     methods: {
       onChange (event) {
           console.log(event.detail);
       },
-      isAuthUserInfo () {
-        let self=this;
-        // 查看是否授权
-        wx.getSetting({
-          success (res){
-            if (res.authSetting['scope.userInfo']) {
-              // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-              self.getWxUserInfo();
-            }
-            else{
-              //授权获取用户信息;并不会弹出选择框
-              wx.authorize({
-                scope:'scope.getUserInfo',
-                success (res) {
-                  //
-                  console.log(res)
-                },
-                fial (err) {
-                  console.log(err)
-                }
-              })
-            }
-          }
-        })
-      },
-      //页面没有授权首先要弹出授权页面
-      onGotUserInfo (e) {
-        console.log(e.mp.detail.errMsg)
-        console.log(e.mp.detail.userInfo)
-        console.log(e.mp.detail.rawData)
-        if(e.mp.detail.userInfo){
-          console.log("用户点击了允许");
-          this.setInfo (this,e.mp.detail.userInfo);
+      getPhoneNumber () {
+        if ("getPhoneNumber:ok" != e.mp.detail.errMsg){
+          wx.showToast({
+            icon:'none',
+            title: '快捷登陆失败'
+          })
+          return;
         }
-        else{
-          console.log("用户点击了拒绝");
-
-        }
-        
-      },
-      //授权后获取用户信息
-      getWxUserInfo () {
-        let self=this;
-        wx.getUserInfo({
-          success: function(res) {
-            let userInfo = res.userInfo;
-            console.log(userInfo);
-            self.setInfo (self,userInfo);
-          }
-        })
-      },
-      setInfo (self,userInfo) {
-        self.userinfo.avatarUrl=userInfo.avatarUrl;
-        self.userinfo.nickName=userInfo.nickName;
-        self.labelInfo="";
-        self.setUserInfo(userInfo);
       },
       ...mapMutations({
-        setOpenId:'SET_OPEN_ID',
-        setUserInfo:'SET_USER_INFO'
       }),
       testDouBan () {
         wx.request({
@@ -153,18 +102,18 @@
               complete: () => {}
           });  
       },
-      async testLocalhost () {
-        let obj= await get("/",{},{
-                   "content-type":"json"
-              });
-        console.log(obj);
-      },
-      testApi () {
+      testWx () {
         apiTest().then((res)=>{
           console.log(res);
-        });
-        
-        
+        }); 
+      },
+      testFlyio () {
+        // this.$http.authorList().then(function (res) {
+        //   console.log(res)
+        // })
+        this.$http.test({name:'nhc'}).then(function (res) {
+          console.log(res)
+        })
       }
     }
   }

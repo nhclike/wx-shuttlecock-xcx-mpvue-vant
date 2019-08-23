@@ -33,7 +33,7 @@
 </template>
 
 <script>
-  import RaceDetail from "@/components/RaceDetail"
+  import RaceDetail from "@/components/raceDetail"
   import EnrollType from "@/components/enrollType"
 
   export default {

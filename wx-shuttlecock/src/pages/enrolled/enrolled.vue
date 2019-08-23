@@ -1,6 +1,5 @@
 <template>
   <div>
-  
     <div>
       <RaceDetail></RaceDetail>  
     </div>
@@ -8,7 +7,7 @@
 </template>
 
 <script>
-import RaceDetail from "@/components/RaceDetail"
+import RaceDetail from "@/components/raceDetail"
   export default {
     data () {
     	return {

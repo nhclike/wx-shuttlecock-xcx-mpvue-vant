@@ -5,6 +5,7 @@
     "pages/enroll/main",
     "pages/me/main",
     "pages/raceCalendar/main",
+    "pages/authUserInfo/main",
     "pages/detail/main"
   ],
   "window": {

@@ -37,7 +37,6 @@
         <RaceInfo></RaceInfo>  
     </div>
   </div>
-
 </template>
 
 <script>

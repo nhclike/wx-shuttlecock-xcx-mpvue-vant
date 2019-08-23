@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import DatetimePicker from "@/components/DatetimePicker"
+import DatetimePicker from "@/components/datetimePicker"
 
 export default {
   props: ['text'],
