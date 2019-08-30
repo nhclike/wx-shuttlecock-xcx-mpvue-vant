@@ -2,11 +2,11 @@
   <div class="container">
     <div class="login-box">
       <img class="login-icon" :src="userInfo.avatarUrl" alt="">
-      <div class="login-wrapper" @click="getWxUserInfo">
+      <div class="login-wrapper" @click="bindTel">
         <van-cell :title="userInfo.nickName" is-link size="large" :label="labelInfo" />
       </div>
     </div>
-    <div class="tabbar">
+    <!-- <div class="tabbar">
       <van-tabbar
         :active="active"
         active-color="#07c160"
@@ -19,11 +19,10 @@
         <van-tabbar-item icon="friends-o">标签</van-tabbar-item>
         <van-tabbar-item icon="setting-o">标签</van-tabbar-item>
       </van-tabbar>
-    </div>
+    </div> -->
     <div class="me-list">
       <van-cell-group>
-        <van-cell title="我的比赛" is-link></van-cell>
-        <van-cell title="常用报名信息" is-link></van-cell>
+        <van-cell title="完善个人信息" is-link></van-cell>
       </van-cell-group>
     </div>
     <div>
@@ -71,6 +70,10 @@
     methods: {
       onChange (event) {
           console.log(event.detail);
+      },
+      bindTel () {
+          let url="/pages/bindTel/main";
+          wx.navigateTo({ url })
       },
       getPhoneNumber () {
         if ("getPhoneNumber:ok" != e.mp.detail.errMsg){

@@ -74,6 +74,13 @@
 					"pathName": "pages/enroll/main",
 					"query": "enroll",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/bindTel/main",
+					"pathName": "pages/bindTel/main",
+					"query": "bindTel",
+					"scene": null
 				}
 			]
 		}

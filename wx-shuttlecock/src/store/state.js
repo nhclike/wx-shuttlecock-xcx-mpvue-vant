@@ -1,5 +1,5 @@
-const state={
-  openId: '111111111111',
-  userInfo:{},
+const state = {
+    openId: '',
+    userInfo: {}
 };
 export default state

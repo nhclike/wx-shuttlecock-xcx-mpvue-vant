@@ -1,16 +1,19 @@
 <template>
-  <div>
-    <button v-show="labelInfo!=''" open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">获取授权</button>
+  <div class="box">
+    <button type="primary" size="default" v-show="labelInfo!=''" open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">微信登录授权</button>
+    <!-- <button @click="getOpenId">获取用户唯一标识openid</button>
+    openid:{{openid}}session_key:{{session_key}} -->
   </div>
 </template>
 
 <script>
   import { mapMutations } from 'vuex'
-
+  import config from '@/config.js'
   export default {
     data () {
     	return {
-    		
+        openid:'',
+        session_key:''
     	}
     },
     components:{
@@ -33,6 +36,7 @@
         if(e.mp.detail.userInfo){
           console.log("用户点击了允许");
           this.setInfo (e.mp.detail.userInfo);
+          this.getOpenId();
           wx.switchTab({
             url: '/pages/me/main'
           })
@@ -40,6 +44,31 @@
         else{
           console.log("用户点击了拒绝");
         }
+      },
+      getOpenId () {
+        const APP_ID =config.wechat.appID;//输入小程序appid
+        const APP_SECRET =config.wechat.appSecret;//输入小程序app_secret
+        var OPEN_ID=''//储存获取到openid
+        var SESSION_KEY=''//储存获取到session_key
+        var that=this;
+        wx.login({
+          success:function(res){
+            console.log(res.code);
+            wx.request({
+                //获取openid接口
+              url: `https://api.weixin.qq.com/sns/jscode2session?appid=${APP_ID}&secret=${APP_SECRET}&js_code=${res.code}&grant_type=authorization_code`,
+              method:'GET',
+              success:function(res){
+                console.log(res.data)
+                OPEN_ID = res.data.openid;//获取到的openid
+                SESSION_KEY = res.data.session_key;//获取到session_key
+                that.openid=OPEN_ID;
+                that.session_key=SESSION_KEY;
+                that.setOpenId(OPEN_ID);
+              }
+            })
+          }
+        })
       },
       ...mapMutations({
         setOpenId:'SET_OPEN_ID',
@@ -51,7 +80,17 @@
 </script>
 
 <style scoped lang="less" rel="stylesheet/less">
-.van-goods-action{
-  background-color:#ddd;
+  @import "./../../common/less/variable.less";
+
+.box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top:0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: @bg-color;
 }
 </style>

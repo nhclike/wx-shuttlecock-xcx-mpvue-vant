@@ -1,13 +1,21 @@
 <template>
   <div>
     <div>
-      <RaceDetail></RaceDetail>  
+      <RaceInfo></RaceInfo>
+      <RaceInfo></RaceInfo>  
+      <RaceInfo></RaceInfo>  
+      <RaceInfo></RaceInfo>  
+      <RaceInfo></RaceInfo>  
+      <RaceInfo></RaceInfo>  
+      <RaceInfo></RaceInfo>  
+      <RaceInfo></RaceInfo>  
+      <RaceInfo></RaceInfo>   
     </div>
   </div>
 </template>
 
 <script>
-import RaceDetail from "@/components/raceDetail"
+import RaceInfo from "@/components/raceInfo"
   export default {
     data () {
     	return {
@@ -15,7 +23,7 @@ import RaceDetail from "@/components/raceDetail"
     	}
     },
     components:{
-      RaceDetail
+      RaceInfo
     },
     methods: {
       onClickIcon () {
