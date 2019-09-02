@@ -1,8 +1,13 @@
 <template>
   <div class="box">
-    <button type="primary" size="default" v-show="labelInfo!=''" open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">微信登录授权</button>
-    <!-- <button @click="getOpenId">获取用户唯一标识openid</button>
-    openid:{{openid}}session_key:{{session_key}} -->
+    <div class="box-wrapper">
+      <img src="./../../../static/images/logo.png">
+      <span>允许微信授权后可体验更多功能</span>
+      <button type="primary" size="default" v-show="labelInfo!=''" open-type="getUserInfo" lang="zh_CN" @getuserinfo="onGotUserInfo">微信登录授权</button>
+      <button @click="goIndex">返回首页</button>
+      <!-- <button @click="getOpenId">获取用户唯一标识openid</button>
+      openid:{{openid}}session_key:{{session_key}} -->
+    </div>
   </div>
 </template>
 
@@ -45,6 +50,11 @@
           console.log("用户点击了拒绝");
         }
       },
+      goIndex (){
+          wx.switchTab({
+            url: '/pages/index/main'
+          })
+      },
       getOpenId () {
         const APP_ID =config.wechat.appID;//输入小程序appid
         const APP_SECRET =config.wechat.appSecret;//输入小程序app_secret
@@ -83,14 +93,28 @@
   @import "./../../common/less/variable.less";
 
 .box{
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: fixed;
   top:0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: @bg-color;
+  background-color: #fff;
+  .box-wrapper{
+    margin: 40rpx;
+    text-align: center;
+    img{
+      height: 260rpx;
+      width: 260rpx;
+      display: block;
+      margin: 40rpx auto;
+    }
+    span{
+      
+    }
+    button{
+      margin: 40rpx auto;
+    }
+  }
+  
 }
 </style>

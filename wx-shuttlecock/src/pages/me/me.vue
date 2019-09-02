@@ -22,7 +22,8 @@
     </div> -->
     <div class="me-list">
       <van-cell-group>
-        <van-cell title="完善个人信息" is-link></van-cell>
+        <van-cell title="完善个人信息" is-link  url="/pages/perfectingInfo/main"></van-cell>
+        <van-cell title="常用参赛信息" is-link></van-cell>
       </van-cell-group>
     </div>
     <div>

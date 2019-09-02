@@ -2,32 +2,29 @@
   <div class="box">
     <div class="box-wrapper">
       <div class="title">
-        绑定手机号
+        完善个人信息
       </div>
       <div class="content">
         <van-cell-group>
           <van-field
-            :value="tel"
+            :value="name"
             required
             clearable
-            label="手机号"
-            placeholder="请输入手机号"
+            label="姓名"
+            placeholder="姓名"
           />
           <van-field
-            :value="sms"
+            :value="cardId"
             required
             center
             clearable
-            label="短信验证码"
-            placeholder="请输入短信验证码"
-            border="false"
-            use-button-slot
+            label="身份证"
+            placeholder="请输入身份证"
           >
-            <van-button slot="button" size="small" type="primary">发送验证码</van-button>
           </van-field>
         </van-cell-group>
       </div>
-      <van-button type="primary" size="large">立即绑定</van-button>
+      <van-button type="primary" size="large">保存</van-button>
     </div>
   </div>
   
@@ -38,8 +35,8 @@
   export default {
     data () {
     	return {
-        tel:'',
-        sms:''
+        name:'',
+        cardId:''
     	}
     },
     components:{
