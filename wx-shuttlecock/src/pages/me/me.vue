@@ -14,9 +14,9 @@
         bind:change="onChange"
         :fixed="false"
       >
-        <van-tabbar-item icon="home-o">标签</van-tabbar-item>
-        <van-tabbar-item icon="search">标签</van-tabbar-item>
-        <van-tabbar-item icon="friends-o">标签</van-tabbar-item>
+        <van-tabbar-item icon="home-o">已报名</van-tabbar-item>
+        <van-tabbar-item icon="search">已完成</van-tabbar-item>
+        <van-tabbar-item icon="friends-o">待比赛</van-tabbar-item>
         <van-tabbar-item icon="setting-o">标签</van-tabbar-item>
       </van-tabbar>
     </div> -->
@@ -24,6 +24,7 @@
       <van-cell-group>
         <van-cell title="完善个人信息" is-link  url="/pages/perfectingInfo/main"></van-cell>
         <van-cell title="常用参赛信息" is-link></van-cell>
+        <van-cell title="我的赛程安排" is-link></van-cell>
       </van-cell-group>
     </div>
     <div>
