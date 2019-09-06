@@ -39,20 +39,22 @@
 <script>
   import {get,post,showSuccess,showModal} from '@/util'
   import { mapGetters, mapMutations } from 'vuex'
-  import { apiTest } from "@/api/wx"
+  import { saveWxUserPhone } from "@/api/wx"
 
   export default {
     data () {
       return {
-        active: 0,
-        labelInfo:'请绑定手机号'
+        active: 0
       }
     },
     computed:{
       ...mapGetters([
         'openId',
         'userInfo'
-      ])
+      ]),
+      labelInfo () {
+        return this.userInfo.tel?this.userInfo.tel:'请绑定手机号'
+      }
     },
     created () {
 
@@ -64,9 +66,19 @@
       console.log("------------onLoad-----------");
       console.log("------------userInfo------------");
       console.log(this.userInfo);
-      if(!this.userInfo.nickName){
+      if(!this.openId){
           let url="/pages/authUserInfo/main";
           wx.redirectTo({ url })
+      }
+      else {
+         this.$fly.getUserInfoByOpenId({openId:this.openId}).then((res)=> {
+          console.log(res);
+          this.setUserInfo({tel:res.data.username,realName:res.data.name,cardId:res.data.idCard});
+          if(!this.userInfo.tel){
+            let url="/pages/bindTel/main";
+            wx.redirectTo({ url })
+          }
+        })
       }
     },
     methods: {
@@ -77,7 +89,7 @@
           let url="/pages/bindTel/main";
           wx.navigateTo({ url })
       },
-      getPhoneNumber () {
+      getPhoneNumber (e) {
         if ("getPhoneNumber:ok" != e.mp.detail.errMsg){
           wx.showToast({
             icon:'none',
@@ -87,6 +99,7 @@
         }
       },
       ...mapMutations({
+        setUserInfo:'SET_USER_INFO'
       }),
       testDouBan () {
         wx.request({
@@ -108,15 +121,12 @@
           });  
       },
       testWx () {
-        apiTest().then((res)=>{
+        saveWxUserPhone({openId:'oIELT5B6J6sxHVhRnUU-gX0ON4ro"',username:'13337459399'}).then((res)=>{
           console.log(res);
         }); 
       },
       testFlyio () {
-        // this.$http.authorList().then(function (res) {
-        //   console.log(res)
-        // })
-        this.$http.test({name:'nhc'}).then(function (res) {
+        this.$fly.bindWxUserPhone({openId:'oIELT5B6J6sxHVhRnUU-gX0ON4ro"',username:'13337459399'}).then((res)=> {
           console.log(res)
         })
       }

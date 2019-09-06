@@ -12,6 +12,7 @@
             clearable
             label="姓名"
             placeholder="姓名"
+            @change="nameChange"
           />
           <van-field
             :value="cardId"
@@ -20,11 +21,12 @@
             clearable
             label="身份证"
             placeholder="请输入身份证"
+            @change="cardChange"
           >
           </van-field>
         </van-cell-group>
       </div>
-      <van-button type="primary" size="large">保存</van-button>
+      <van-button type="primary" size="large" @click="saveInfo">保存</van-button>
     </div>
   </div>
   
@@ -32,6 +34,7 @@
 
 <script>
   import { mapMutations } from 'vuex'
+  import {validateName,validateIdCard} from "@/utils/validate.js"
   export default {
     data () {
     	return {
@@ -48,7 +51,24 @@
       console.log("------------onLoad-----------");
     },
     methods: {
-      
+      nameChange (e){
+        let val=e.mp.detail;
+        validateName(val);
+      },
+      cardChange (e){
+        let val=e.mp.detail;
+        validateIdCard(val);
+      },
+      saveInfo (){
+        if(validateIdCard(this.cardId)&&validateName(this.name)){
+          //验证通过
+          console.log("验证通过");
+        }
+        else{
+
+        }
+      }
+
     },
     
   }
@@ -57,7 +77,7 @@
 <style scoped lang="less" rel="stylesheet/less">
    @import "./../../common/less/variable.less";
 .box{
-   position: fixed;
+  position: fixed;
   top:0;
   left: 0;
   right: 0;

@@ -12,6 +12,8 @@
             clearable
             label="手机号"
             placeholder="请输入手机号"
+            @change="telChange"
+            :error-message="telMessage"
           />
           <van-field
             :value="sms"
@@ -27,33 +29,72 @@
           </van-field>
         </van-cell-group>
       </div>
-      <van-button type="primary" size="large">立即绑定</van-button>
+      <van-button type="primary" size="large" @click="bindTel">立即绑定</van-button>
     </div>
   </div>
   
 </template>
 
 <script>
-  import { mapMutations } from 'vuex'
+  import { mapGetters, mapMutations } from 'vuex'
   export default {
     data () {
     	return {
         tel:'',
+        telMessage:'',
         sms:''
     	}
+    },
+     computed:{
+      ...mapGetters([
+        'openId'
+      ])
     },
     components:{
     },
     mounted () {
-      console.log("------------mounted-----------");
+      console.log("-----bindTel-------mounted-----------");
     },
     onLoad: function() {
-      console.log("------------onLoad-----------");
+      console.log("-----bindTel-------onLoad-----------");
     },
     methods: {
-      
+      telChange (event) {
+        const phone = event.mp.detail;
+        console.log("change"+phone);
+        let message = '';
+        if (phone) {
+          if(phone.length>=11){
+            if (/^1(3|4|5|7|8)\d{9}$/.test(phone)) {
+              message = '';
+            } else {
+              message = '您输入的手机号码有误';
+            }
+          }
+        } else {
+          message = '输入的手机号不能为空';
+        }
+        this.telMessage=message;
+        this.tel=phone;
+      },
+      bindTel(){
+        let params={
+          openId:this.openId,
+          username:this.tel
+        }
+        this.$fly.bindWxUserPhone(params).then((res)=> {
+          console.log(res);
+          if(res.code){
+            this.setUserInfo({tel:this.tel});
+            let url="/pages/me/main";
+            wx.navigateTo({ url })
+          }
+        })
+      },
+      ...mapMutations({
+        setUserInfo:'SET_USER_INFO'
+      }), 
     },
-    
   }
 </script>
 

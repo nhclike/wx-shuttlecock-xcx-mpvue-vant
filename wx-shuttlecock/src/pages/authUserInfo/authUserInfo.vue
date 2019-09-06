@@ -30,9 +30,6 @@
       console.log("------------onLoad-----------");
     },
     methods: {
-      setInfo (userInfo) {
-        this.setUserInfo(userInfo);
-      },
       //页面没有授权首先要弹出授权页面
       onGotUserInfo (e) {
         console.log(e.mp.detail.errMsg)
@@ -40,8 +37,8 @@
         console.log(e.mp.detail.rawData)
         if(e.mp.detail.userInfo){
           console.log("用户点击了允许");
-          this.setInfo (e.mp.detail.userInfo);
           this.getOpenId();
+          this.setUserInfo(e.mp.detail.userInfo);
           wx.switchTab({
             url: '/pages/me/main'
           })

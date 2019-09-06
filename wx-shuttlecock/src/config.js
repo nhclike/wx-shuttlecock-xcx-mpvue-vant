@@ -1,6 +1,6 @@
 // 配置项
 
-const host = 'http://localhost:5000';
+const host = 'http://172.19.82.150:8080';
 
 const config = {
     host,

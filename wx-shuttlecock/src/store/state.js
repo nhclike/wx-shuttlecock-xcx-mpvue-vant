@@ -1,5 +1,9 @@
 const state = {
     openId: '',
-    userInfo: {}
+    userInfo: {
+        tel: '',
+        cardId: '',
+        realName: ''
+    }
 };
 export default state
