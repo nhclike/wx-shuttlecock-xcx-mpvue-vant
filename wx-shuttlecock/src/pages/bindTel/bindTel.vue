@@ -37,7 +37,7 @@
 
 <script>
   import { mapGetters, mapMutations } from 'vuex'
-  import { showSuccess } from "@/util.js";
+  import { showSuccess } from "@/util.js"
   export default {
     data () {
     	return {
@@ -48,7 +48,7 @@
         titleText:'绑定手机号'
     	}
     },
-     computed:{
+    computed:{
       ...mapGetters([
         'openId',
         "userInfo"
