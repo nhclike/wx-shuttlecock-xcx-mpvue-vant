@@ -14,6 +14,7 @@
 <script>
   import { mapMutations } from 'vuex'
   import config from '@/config.js'
+import { resolve } from 'q';
   export default {
     data () {
     	return {
@@ -32,16 +33,28 @@
     methods: {
       //页面没有授权首先要弹出授权页面
       onGotUserInfo (e) {
-        console.log(e.mp.detail.errMsg)
-        console.log(e.mp.detail.userInfo)
-        console.log(e.mp.detail.rawData)
-        if(e.mp.detail.userInfo){
+        // console.log(e.mp.detail.errMsg)
+         console.log(e.mp.detail.userInfo)
+        // console.log(e.mp.detail.rawData)
+        let _this=this;
+        let wx_userInfo=e.mp.detail.userInfo;
+        if(wx_userInfo){
           console.log("用户点击了允许");
-          this.getOpenId();
-          this.setUserInfo(e.mp.detail.userInfo);
-          wx.switchTab({
-            url: '/pages/me/main'
-          })
+          this.wxLogin().then(res=>{
+            if(res){
+              _this.getOpenId(res).then(res=>{
+                if(res){
+                  //设置openId
+                  _this.setOpenId(_this.openid);
+                  //记录用户信息
+                  _this.setUserInfo(wx_userInfo);
+                  wx.switchTab({
+                    url: '/pages/me/main'
+                  })
+                }
+              })  
+            }
+          });  
         }
         else{
           console.log("用户点击了拒绝");
@@ -52,29 +65,42 @@
             url: '/pages/index/main'
           })
       },
-      getOpenId () {
+      wxLogin (){
+        return new Promise((resolve,reject)=>{
+          wx.login({
+            success:function(res){
+              console.log("拿到wx.login返回值code");
+              console.log(res.code);
+              if(res.code){
+                resolve(res.code)
+              }
+              else{
+                reject(res.errMsg);
+              }
+            }
+          });
+        })
+      },
+      getOpenId (code) {
         const APP_ID =config.wechat.appID;//输入小程序appid
         const APP_SECRET =config.wechat.appSecret;//输入小程序app_secret
-        var OPEN_ID=''//储存获取到openid
-        var SESSION_KEY=''//储存获取到session_key
         var that=this;
-        wx.login({
-          success:function(res){
-            console.log(res.code);
-            wx.request({
-                //获取openid接口
-              url: `https://api.weixin.qq.com/sns/jscode2session?appid=${APP_ID}&secret=${APP_SECRET}&js_code=${res.code}&grant_type=authorization_code`,
-              method:'GET',
-              success:function(res){
-                console.log(res.data)
-                OPEN_ID = res.data.openid;//获取到的openid
-                SESSION_KEY = res.data.session_key;//获取到session_key
-                that.openid=OPEN_ID;
-                that.session_key=SESSION_KEY;
-                that.setOpenId(OPEN_ID);
-              }
-            })
-          }
+        return new Promise((resolve,reject)=>{
+          wx.request({
+                  //获取openid接口
+                url: `https://api.weixin.qq.com/sns/jscode2session?appid=${APP_ID}&secret=${APP_SECRET}&js_code=${code}&grant_type=authorization_code`,
+                method:'GET',
+                success:function(res){
+                  console.log("----jscode2session-----")
+                  console.log(res)
+                  that.openid = res.data.openid;//获取到的openid
+                  that.session_key = res.data.session_key;//获取到session_key
+                  resolve(res.data);
+                },
+                fail:function(err){
+                  reject(err)
+                }
+              })
         })
       },
       ...mapMutations({

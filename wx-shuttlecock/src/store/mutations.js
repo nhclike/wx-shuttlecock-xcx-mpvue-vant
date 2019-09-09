@@ -8,7 +8,7 @@ const mutations = {
         state.openId = v;
     },
     [types.SET_USER_INFO](state, obj) {
-        state.userInfo = Object.assign(obj, state.userInfo);
+        state.userInfo = Object.assign(state.userInfo, obj);
     },
 };
 

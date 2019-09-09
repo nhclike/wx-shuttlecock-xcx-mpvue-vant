@@ -1,6 +1,6 @@
 // 配置项
 
-const host = 'http://172.19.82.150:8080';
+const host = 'http://172.19.82.219:8089';
 
 const config = {
     host,

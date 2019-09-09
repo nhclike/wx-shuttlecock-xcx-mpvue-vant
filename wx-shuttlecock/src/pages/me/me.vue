@@ -66,6 +66,7 @@
       console.log("------------onLoad-----------");
       console.log("------------userInfo------------");
       console.log(this.userInfo);
+      let _this=this;
       if(!this.openId){
           let url="/pages/authUserInfo/main";
           wx.redirectTo({ url })
@@ -73,8 +74,15 @@
       else {
          this.$fly.getUserInfoByOpenId({openId:this.openId}).then((res)=> {
           console.log(res);
-          this.setUserInfo({tel:res.data.username,realName:res.data.name,cardId:res.data.idCard});
-          if(!this.userInfo.tel){
+          let self_userInfo={
+            tel:res.data.username,
+            realName:res.data.name,
+            cardId:res.data.idCard
+          };
+          console.log("根据openId获取的用户信息");
+          console.log(self_userInfo);
+          _this.setUserInfo(self_userInfo);
+          if(!_this.userInfo.tel){
             let url="/pages/bindTel/main";
             wx.redirectTo({ url })
           }

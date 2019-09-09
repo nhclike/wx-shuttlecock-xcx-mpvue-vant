@@ -2,7 +2,7 @@
   <div class="box">
     <div class="box-wrapper">
       <div class="title">
-        绑定手机号
+        {{titleText}}
       </div>
       <div class="content">
         <van-cell-group>
@@ -29,7 +29,7 @@
           </van-field>
         </van-cell-group>
       </div>
-      <van-button type="primary" size="large" @click="bindTel">立即绑定</van-button>
+      <van-button type="primary" size="large" @click="bindTel">{{btnText}}</van-button>
     </div>
   </div>
   
@@ -37,26 +37,37 @@
 
 <script>
   import { mapGetters, mapMutations } from 'vuex'
+  import { showSuccess } from "@/util.js";
   export default {
     data () {
     	return {
         tel:'',
         telMessage:'',
-        sms:''
+        sms:'',
+        btnText:'立即绑定',
+        titleText:'绑定手机号'
     	}
     },
      computed:{
       ...mapGetters([
-        'openId'
+        'openId',
+        "userInfo"
       ])
     },
     components:{
     },
     mounted () {
       console.log("-----bindTel-------mounted-----------");
+      console.log(this.userInfo);
     },
     onLoad: function() {
       console.log("-----bindTel-------onLoad-----------");
+      console.log(this.userInfo);
+      if(this.userInfo.tel){
+        this.tel=this.userInfo.tel;
+        this.titleText="修改手机号";
+        this.btnText="立即修改";
+      }
     },
     methods: {
       telChange (event) {
@@ -82,14 +93,28 @@
           openId:this.openId,
           username:this.tel
         }
-        this.$fly.bindWxUserPhone(params).then((res)=> {
-          console.log(res);
-          if(res.code){
-            this.setUserInfo({tel:this.tel});
-            let url="/pages/me/main";
-            wx.navigateTo({ url })
-          }
-        })
+        if(this.btnText==="立即绑定"){
+          this.$fly.bindWxUserPhone(params).then((res)=> {
+            console.log(res);
+            if(res.code==1){
+              this.setUserInfo({tel:this.tel});
+              showSuccess("绑定成功");
+              let url="/pages/me/main";
+              wx.switchTab({ url })
+            }
+          })
+        }
+        else if(this.btnText==="立即修改"){
+          this.$fly.updateWxBindPhone(params).then((res)=> {
+            console.log(res);
+            if(res.code){
+              this.setUserInfo({tel:this.tel});
+              showSuccess("修改成功！")
+              let url="/pages/me/main";
+              wx.switchTab({ url })
+            }
+          })
+        }
       },
       ...mapMutations({
         setUserInfo:'SET_USER_INFO'
