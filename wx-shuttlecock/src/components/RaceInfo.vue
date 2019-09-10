@@ -34,7 +34,6 @@
 			</div>
 		</div>
 	</a>
-
 </template>
 
 <script>
@@ -55,7 +54,6 @@
     methods:{
 
     }
-
   }
 
 </script>

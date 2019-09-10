@@ -28,10 +28,10 @@
       </van-cell-group>
     </div>
     <div>
-      <button @click="testDouBan">接口豆瓣测试</button>
+      <!-- <button @click="testDouBan">接口豆瓣测试</button>
       <button @click="testWx">wx接口测试</button>
       <button @click="testFlyio">flyio接口测试</button>
-      <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">微信手机号授权登陆</button>
+      <button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">微信手机号授权登陆</button> -->
     </div>
   </div>
 </template>
@@ -74,18 +74,20 @@
       else {
          this.$fly.getUserInfoByOpenId({openId:this.openId}).then((res)=> {
           console.log(res);
-          let self_userInfo={
-            tel:res.data.username,
-            realName:res.data.name,
-            cardId:res.data.idCard
-          };
-          console.log("根据openId获取的用户信息");
-          console.log(self_userInfo);
-          _this.setUserInfo(self_userInfo);
-          if(!_this.userInfo.tel){
-            let url="/pages/bindTel/main";
-            wx.redirectTo({ url })
+          if(res&&res.data){
+            let self_userInfo={
+              tel:res.data.username,
+              realName:res.data.name,
+              cardId:res.data.idCard
+            };
+            console.log("根据openId获取的用户信息");
+            console.log(self_userInfo);
+            _this.setUserInfo(self_userInfo);
           }
+          if(!_this.userInfo.tel){
+              let url="/pages/bindTel/main";
+              wx.redirectTo({ url })
+            }
         })
       }
     },

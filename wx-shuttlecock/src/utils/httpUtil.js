@@ -22,7 +22,7 @@ request.interceptors.response.use(
             wx.showToast({
                 title: response.data.msg,
                 icon: 'none',
-                duration: 1000
+                duration: 2000
             })
         }
         return promise.resolve(response.data)
@@ -30,10 +30,10 @@ request.interceptors.response.use(
     (err, promise) => {
         wx.hideLoading()
         console.log(err);
-        wx.showToast({
-            title: err.message,
-            icon: 'none',
-            duration: 1000
+        wx.showModal({
+            title: '系统提示',
+            content: err.message,
+            showCancel: false
         })
         return promise.resolve()
     }

@@ -2,18 +2,13 @@
   <div>
     <div class="header-box">
       <div class="search-box">
-       <!--  <div class="calendar-wrapper">
-          <a href="/pages/raceCalendar/main">
-            <img src="/static/images/calendar.png" alt="">
-          </a>
-        </div> -->
         <div class="search-wrapper">
           <Search></Search>
         </div>
       </div>
       
       <div class="navbar-filter">
-        <MenuFilter></MenuFilter>  
+         <MenuFilter></MenuFilter> 
       </div>
     </div>
     <div class="list-box">
@@ -50,20 +45,10 @@ export default {
       searchWord:'',
     }
   },
-
   components: {
     RaceInfo,
     MenuFilter,
     Search
-  },
-
-  methods: {
-   
-  },
-
-  created () {
-
-
   }
 }
 </script>

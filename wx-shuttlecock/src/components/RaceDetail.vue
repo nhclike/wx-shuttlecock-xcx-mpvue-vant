@@ -57,22 +57,20 @@ export default {
 
 <style scoped lang="less">
   @import "./../common/less/variable.less";
-
-.box{
-
-	.box-wrapper{
-		margin: 40rpx;
-		.item{
-			display: flex;
-			font-size: @font-size-medium-x;
-			margin: 20rpx 0;
-			b{
-				color:@text-color;
-			}
-			span{
-				color:@text-color-light;
+	.box{
+		.box-wrapper{
+			margin: 40rpx;
+			.item{
+				display: flex;
+				font-size: @font-size-medium-x;
+				margin: 20rpx 0;
+				b{
+					color:@text-color;
+				}
+				span{
+					color:@text-color-light;
+				}
 			}
 		}
 	}
-}
 </style>

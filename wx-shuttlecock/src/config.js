@@ -1,7 +1,7 @@
 // 配置项
 
-const host = 'http://172.19.82.219:8089';
-
+const host = 'http://www.nblhtech.cn:8089';
+//const host = 'http://172.19.82.219:8089';
 const config = {
     host,
     wechat: {

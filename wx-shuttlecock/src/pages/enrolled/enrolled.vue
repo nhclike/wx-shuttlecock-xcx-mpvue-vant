@@ -24,7 +24,7 @@ import RaceInfo from "@/components/raceInfo"
   export default {
     data () {
     	return {
-    		hasEnroll:false
+    		hasEnroll:true
     	}
     },
     components:{
