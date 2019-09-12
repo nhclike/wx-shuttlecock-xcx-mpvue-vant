@@ -60,10 +60,10 @@
 
     },
     mounted () {
-      console.log(this.openId+"------------openId------------");
+      console.log(this.openId+"-----me-------openId------------");
     },
     onLoad: function() {
-      console.log("------------onLoad-----------");
+      console.log("--------me----onLoad-----------");
       console.log("------------userInfo------------");
       console.log(this.userInfo);
       let _this=this;

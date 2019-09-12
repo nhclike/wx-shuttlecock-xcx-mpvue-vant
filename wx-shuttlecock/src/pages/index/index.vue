@@ -6,30 +6,12 @@
           <Search></Search>
         </div>
       </div>
-      
       <div class="navbar-filter">
-         <MenuFilter></MenuFilter> 
+         <MenuFilter @changeItem="changeMenuFilter"></MenuFilter> 
       </div>
     </div>
     <div class="list-box">
-        <RaceInfo></RaceInfo>
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
-        <RaceInfo></RaceInfo>  
+        <RaceInfo :raceList=raceList></RaceInfo>
     </div>
   </div>
 </template>
@@ -38,17 +20,56 @@
 import RaceInfo from "@/components/raceInfo"
 import MenuFilter from "@/components/dropDownMenuFilter"
 import Search from "@/components/search"
-
+import { mapGetters } from "vuex";
 export default {
   data () {
     return {
       searchWord:'',
+      raceList:[]
     }
   },
   components: {
     RaceInfo,
     MenuFilter,
     Search
+  },
+  created () {
+    console.log("-----index-------created-----------");
+  },
+  computed:{
+    ...mapGetters([
+      'filterRaceObj'
+    ])
+  },
+  mounted () {
+    console.log("-----index-------mounted-----------");
+  },
+  onLoad: function() {
+    console.log("-----index-------onLoad-----------");
+    this.init();
+
+  },
+  methods:{
+    init(){
+      let _this=this;
+      let params={
+        pageNum:0,
+        pageSize:10,
+        competitionState:_this.filterRaceObj.competitionState,
+        competitionDate:_this.filterRaceObj.competitionDate,
+      }
+      _this.$fly.getWxCompetitionList(params).then((res)=> {
+        console.log(res)
+        if(res&&res.data){
+          _this.raceList=res.data;
+        }
+      })
+    },
+    changeMenuFilter(){
+      console.log("changItem");
+      console.log(this.filterRaceObj);
+      this.init();
+    }
   }
 }
 </script>

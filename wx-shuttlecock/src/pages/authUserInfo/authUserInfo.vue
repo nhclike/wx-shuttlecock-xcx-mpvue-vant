@@ -25,10 +25,10 @@ import { resolve } from 'q';
     components:{
     },
     mounted () {
-      console.log("------------mounted-----------");
+      console.log("-----authUserInfo-------mounted-----------");
     },
     onLoad: function() {
-      console.log("------------onLoad-----------");
+      console.log("-----authUserInfo-------onLoad-----------");
     },
     methods: {
       //页面没有授权首先要弹出授权页面

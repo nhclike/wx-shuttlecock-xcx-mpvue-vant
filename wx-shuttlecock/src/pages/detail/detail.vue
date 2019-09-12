@@ -1,61 +1,50 @@
 <template>
-  <div>
-    <RaceDetail></RaceDetail> 
-    <van-goods-action>
-      <van-goods-action-icon
-        icon="like-o"
-        text="收藏"
-        @click="onClickIcon"
-      />
-      <van-goods-action-icon
-        icon="edit"
-        text="参赛宣言"
-        @click="onClickIcon"
-      />
-      <van-goods-action-icon
-        icon="flag-o"
-        text="参加过"
-        @click="onClickIcon"
-      />
-      
-      <van-goods-action-button
-        text="写点评"
-        @click="onClickButton"
-        type="warning"
-      />
-      <van-goods-action-button
-        text="一键报名"
-        @click="onClickButton"
-      />
-    </van-goods-action>
-    <EnrollType :show=showEnrollType @onClose=closeEnrollType></EnrollType>
+  <div class="box">
+    <div class="box-content">
+      <RaceDetail :raceDetail=raceDetail></RaceDetail> 
+    </div>
   </div>
 </template>
 
 <script>
   import RaceDetail from "@/components/raceDetail"
-  import EnrollType from "@/components/enrollType"
 
   export default {
     data () {
     	return {
-    		showEnrollType:false
+        id:'',
+        raceDetail:{}
     	}
     },
     components:{
       RaceDetail,
-      EnrollType
+    },
+    mounted(){
+      this.init(this.id);
+    },
+    onLoad: function() {
+      console.log("-----index-------onLoad-----------");
+      console.log(this.$root.$mp.query);
+      this.id=this.$root.$mp.query.id;
+      
     },
     methods: {
-      onClickIcon () {
-
+      init(id){
+        let params={
+          competitionId:id  
+        };
+        this.$fly.getWxCompetitionDetail(params).then((res)=> {
+          console.log(res)
+          if(res&&res.data){
+            this.raceDetail=res.data;
+          }
+        })
       },
-      onClickButton () {
-         
-          this.showEnrollType=true;
+      showEnrollType () {
+          this.showEnrollTypeFlag=true;
       },
       closeEnrollType () {
-          this.showEnrollType=false;
+          this.showEnrollTypeFlag=false;
 
       }
     }
@@ -64,8 +53,36 @@
 </script>
 
 <style scoped lang="less" rel="stylesheet/less">
-.van-goods-action{
-  background-color:#ddd;
-}
+// .box{
+//   position: fixed;
+//   top:0;
+//   bottom:0;
+//   left:0;
+//   right:0;
+//   z-index:0;
+//   .box-content{
+//     position: absolute;
+//     top:0;
+//     bottom:100rpx;
+//     width: 100%;
+//     z-index: 1;
+//   }
+//   .box-footer{
+//     position: absolute;
+//     bottom: 0;
+//     width: 100%;
+//     height: 100rpx;
+//     left: 0;
+//     z-index: 1;
+//   }
+//   .box-type{
+//     position: fixed;
+//     top: 0;
+//     width: 100%;
+//     height: 100%;
+//     left: 0;
+//     z-index: 5000;
+//   }
+// }
 
 </style>

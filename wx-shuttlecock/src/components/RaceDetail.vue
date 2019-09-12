@@ -1,7 +1,11 @@
 <template>
   <div class="box">
     <div class="box-wrapper">
-			<div class="item">
+			<div class="item" v-for="(value, key, index) in raceDetail" :key="index">
+				<b>{{key}}</b>
+    		<span>{{value}}</span>
+			</div>
+			<!-- <div class="item">
     		<b>比赛名称：</b>
     		<span>杭州市青年比赛</span>
     	</div>
@@ -44,14 +48,19 @@
     	<div class="item">
     		<b>咨询电话：</b>
     		<span>8098980</span>
-    	</div>
+    	</div> -->
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['text']
+  props: {
+		raceDetail:{
+			type:Object,
+			default:{}
+		}
+	}
 }
 </script>
 
@@ -66,6 +75,7 @@ export default {
 				margin: 20rpx 0;
 				b{
 					color:@text-color;
+					min-width: 150rpx;
 				}
 				span{
 					color:@text-color-light;

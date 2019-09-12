@@ -10,6 +10,12 @@ const mutations = {
     [types.SET_USER_INFO](state, obj) {
         state.userInfo = Object.assign(state.userInfo, obj);
     },
+    [types.SET_CUR_ENROLL_ID](state, v) {
+        state.curEnrollId = v;
+    },
+    [types.SET_Filter_RACE_OBJ](state, obj) {
+        state.filterRaceObj = Object.assign(state.filterRaceObj, obj);
+    },
 };
 
 export default mutations

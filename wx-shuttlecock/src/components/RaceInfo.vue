@@ -1,43 +1,53 @@
 <template>
-	<a :href="detailUrl">
-		<div class="raceInfo">
-			<div class="race-wrapper">	
-				<div class="thumb-box" :style="{backgroundImage:'url(https://6d70-mpvue-test-demo-xiq0s-1259052527.tcb.qcloud.la/match.png?sign=62d5310c2ae3676e0273b5c41b5d0e01&t=1565749502)',backgroundSize:'180rpx 180rpx'}">
-					<!-- <img class="recomment" src="/static/images/recommend.png" alt=""> -->
-				</div>
-				<div class="info-box">
-					<div class="info-wrapper">
-						<div class="title">
-							2019杭州滨江区羽毛球比赛
+	<div>
+		<div  :key="index" v-for="(item,index) in raceList">
+			<!-- <a :href="detailUrl"> -->
+				<div class="raceInfo" @click.stop="detailUrl(item.id,item.competitionState)">
+					<div class="race-wrapper">	
+						<div class="thumb-box" :style="{backgroundImage:'url(https://6d70-mpvue-test-demo-xiq0s-1259052527.tcb.qcloud.la/match.png?sign=62d5310c2ae3676e0273b5c41b5d0e01&t=1565749502)',backgroundSize:'180rpx 180rpx'}">
+							<!-- <img class="recomment" src="/static/images/recommend.png" alt=""> -->
 						</div>
-						<div class="time">
-							2019-07-07 ~ 2019-08-05
-						</div>
-						<div class="content">
-							<div class="location">
-								滨江羽毛球馆
-							</div>
-							<div class="num">
-								10/30人
-							</div>
-						</div>
-						<div class="operate">
-							<div class="opt-btn gray">
-								报名中
-							</div>
-							<div class="opt-btn orange">
-								一键报名
+						<div class="info-box">
+							<div class="info-wrapper">
+								<div class="title">
+									{{item.competitionName}}
+								</div>
+								<div class="time">
+									{{item.competitionStartDate}} ~ {{item.competitionEndDate}}
+								</div>
+								<div class="content">
+									<div class="location">
+										{{item.competitionSite}}
+									</div>
+									<div class="num">
+										{{item.competitionAppleNum}}
+									</div>
+								</div>
+								<div class="operate">
+									<div class="opt-btn gray" v-if="item.competitionState=='1'">
+										报名中
+									</div>
+									<div class="opt-btn orange" v-else>
+										已结束报名
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			<!-- </a> -->
 		</div>
-	</a>
+	</div>
 </template>
 
 <script>
   export default {
+		props:{
+			raceList:{
+				type:Array,
+				default:[]
+			}
+		},
     data(){
       return{
 
@@ -47,12 +57,20 @@
 
     },
     computed:{
-      detailUrl(){
-        return '/pages/detail/main?id=1'
-      }
+     
     },
     methods:{
+			detailUrl(id,status){
+				let url='';
+				if(status=='1'){
+					url= `/pages/detailEnroll/main?id=${id}`;
+				}
+				else{
+					url= `/pages/detail/main?id=${id}`;
+				}
+				wx.navigateTo({ url })
 
+      }
     }
   }
 

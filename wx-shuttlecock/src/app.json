@@ -8,7 +8,9 @@
         "pages/authUserInfo/main",
         "pages/bindTel/main",
         "pages/perfectingInfo/main",
-        "pages/detail/main"
+        "pages/detail/main",
+        "pages/detailEnroll/main"
+
     ],
     "window": {
         "backgroundTextStyle": "light",

@@ -63,7 +63,7 @@
 
 <script>
 import DatetimePicker from "@/components/datetimePicker"
-
+import { mapMutations } from "vuex";
 export default {
   props: ['text'],
   data(){
@@ -76,7 +76,7 @@ export default {
       darkBg:false,
       areaNames:["不限","上海","重庆","杭州","上海","武汉","天津","南京","南昌","广州","深圳","成都","长沙"],
       curSelectArea:0,
-      status:["不限","一键报名","正在报名"],
+      status:["不限","正在报名","已结束报名"],
       curSelectStatus:0
 
   	}
@@ -109,27 +109,32 @@ export default {
     chooseStatus (index) {
       this.curSelectStatus=index;
       if(index==0){
+        this.setFilterRaceObj({competitionState:""});
         this.chooseItem("筛选");
+
       }
       else{
+        this.setFilterRaceObj({competitionState:index});
         this.chooseItem(this.status[index]);
       }
     },
     //确定日期选择
     datetimeConfirm (val) {
+      console.log("datetimeConfirm");
       console.log(val);
+      this.setFilterRaceObj({competitionDate:val});
       this.chooseItem(val);
     },
-    
     //取消日期选择--选择不限
     datetimeCancel () {
       console.log("datetimeCancel");
+      this.setFilterRaceObj({competitionDate:""});
       this.chooseItem("日期");
-
     },
     chooseItem (val) {
       this.titles[this.curTitleIndex]=val;
       this.hideNavContent();
+      this.$emit('changeItem');
     },
     //选择导航菜单项
     chooseNav (index) {
@@ -140,7 +145,10 @@ export default {
     hideNavContent () {
       this.curTitleIndex=-1;
       this.darkBg=false;
-    }
+    },
+    ...mapMutations({
+      setFilterRaceObj:'SET_Filter_RACE_OBJ'
+    }),
   }
 }
 </script>

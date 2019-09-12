@@ -3,11 +3,11 @@
     <van-action-sheet :show="show" title="比赛类型" @close="onClose">
       <div class="center-box">
         <div v-for="(item,index) in types"  class="type-item" 
-          :class="[index==curSelTypeIndex?'selectType':'']"
+          :class="[item.competitionType==curSelType?'selectType':'']"
           :key="index" 
-          @click="changeType(index)"
+          @click="changeType(item.competitionType)"
           >
-          {{item}}
+          {{item.competitionTypeName}}
         </div>
       </div>
   		
@@ -19,29 +19,56 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
 	props:{
 		show:{
 			type:Boolean,
       default:false
-		}
+    },
+    types:{
+      type:Array,
+      default:[{
+        competitionTypeName:'',
+        competitionType:0
+      }]
+    }
 	},
   data () {
   	return {
-			types:["男子双打","男子单打","女子双打","女子单打","男女混打"],
-      curSelTypeIndex:0
+      curSelType:1
   	}
+  },
+  computed:{
+    ...mapGetters([
+      'curEnrollId',
+      'openId',
+      'userInfo'
+    ])
   },
   methods:{
     goToEnroll () {
-      let url="/pages/enroll/main?type=1";
+      let url='';
+      console.log("this.curEnrollId"+this.curEnrollId);
+      console.log("this.curEnrollId"+this.openId);
+      console.log("this.curEnrollId"+this.userInfo);
+
+      if(!this.openId){
+        url="/pages/authUserInfo/main";
+      }
+      else if(!this.userInfo.tel){
+        url="/pages/bindTel/main";
+      }
+      else{
+        url=`/pages/enroll/main?type=${this.curSelType}&competitionId=${this.curEnrollId}`;
+      }
       wx.navigateTo({ url })
     },
     onClose () {
       this.$emit('onClose');
     },
-    changeType (index) {
-      this.curSelTypeIndex=index;
+    changeType (type) {
+      this.curSelType=type;
     }
   }
 }

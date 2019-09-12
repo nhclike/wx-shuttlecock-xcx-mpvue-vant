@@ -54,6 +54,11 @@ import EnrollForm from "@/components/enrollForm"
     components:{
       EnrollForm
     },
+    onLoad: function() {
+      console.log("-----index-------onLoad-----------");
+      console.log(this.$root.$mp.query);
+    
+    },
     methods: {
       onChange () {
 
