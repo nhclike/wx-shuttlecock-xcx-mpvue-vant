@@ -65,14 +65,6 @@ let validateSame = (item1, item2, required = true, msg = '验证码') => {
     }
 };
 
-
-
-
-
-
-
-
-
 /* 方法说明
  *@validateName 校验中文姓名
  *@param{String}[item] 被校验字段
@@ -97,7 +89,6 @@ let validateIdCard = (item, required = true, msg = '身份证号') => {
     return validateComFn(item, required, msg, !reg.test(item));
 };
 
-
 /* 方法说明
  *@validateTel 校验手机号
  *@param{String}[item] 被校验字段
@@ -109,10 +100,6 @@ let validateTel = (item, required = true, msg = '手机号') => {
     let reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
     return validateComFn(item, required, msg, !reg.test(item));
 };
-
-
-
-
 
 /* 方法说明
  *@validateVerifiCode 校验验证码（6位数字）
@@ -137,8 +124,6 @@ let validateInvitedCode = (item, required = false, msg = '邀请码') => {
     let reg = /^[A-Z0-9]{6}$/;
     return validateComFn(item, required, msg, !reg.test(item));
 };
-
-
 
 export {
     validateName, // 校验中文姓名

@@ -59,6 +59,9 @@ export default {
       else if(!this.userInfo.tel){
         url="/pages/bindTel/main";
       }
+      else if(!this.userInfo.cardId){
+        url="/pages/perfectingInfo/main";
+      }
       else{
         url=`/pages/enroll/main?type=${this.curSelType}&competitionId=${this.curEnrollId}`;
       }

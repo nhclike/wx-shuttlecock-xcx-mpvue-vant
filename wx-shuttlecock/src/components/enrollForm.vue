@@ -34,11 +34,21 @@
 
 <script>
 export default {
+	props:{
+		defaultVal:{
+			type:Object,
+			default:{
+					name:"",
+					cardId:"",
+					tel:""
+			}
+		}
+	},
   data () {
   	return {
-			name:"",
-			cardId:"",
-			tel:""
+			name:this.defaultVal.name,
+			cardId:this.defaultVal.name,
+			tel:this.defaultVal.name
   	}
   }
 }

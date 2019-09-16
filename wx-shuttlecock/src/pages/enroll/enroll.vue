@@ -21,47 +21,244 @@
     </div>
     <div class="selfInfo">
       <div class="title-box">参赛者信息</div>
-      <EnrollForm></EnrollForm>
+      <van-cell-group>
+        <van-field
+          :value="selfInfo.name"
+          required
+          disabled
+          clearable
+          label="姓名"
+          placeholder="姓名"
+        />
+        <van-field
+          value="身份证"
+          required
+          disabled
+          clearable
+          label="证件类型"
+        />
+        <van-field
+          :value="selfInfo.idCard"
+          required
+          disabled
+          clearable
+          label="证件号"
+          placeholder="请输入证件号"
+        />
+        <van-field
+          :value="selfInfo.phone"
+          required
+          disabled
+          clearable
+          label="手机号"
+          placeholder="请输入手机号"
+        />
+		  </van-cell-group>
     </div>
-    <div class="memberInfo">
+    <div class="memberInfo" v-show="memberInfoShowFlag">
       <div class="title-box">队友信息</div>
-      <EnrollForm></EnrollForm>
+      <van-cell-group>
+        <van-field
+          :value="memberInfo.name"
+          required
+          clearable
+          label="姓名"
+          placeholder="姓名"
+          @change="nameChange"
+          :error-message="nameMessage"
+        />
+        <van-field
+          value="身份证"
+          required
+          clearable
+          label="证件类型"
+        />
+        <van-field
+          :value="memberInfo.idCard"
+          required
+          clearable
+          label="证件号"
+          placeholder="请输入证件号"
+          @change="idCardChange"
+          :error-message="idCardMessage"
+        />
+        <van-field
+          :value="memberInfo.phone"
+          required
+          clearable
+          label="手机号"
+          placeholder="请输入手机号"
+          @change="telChange"
+          :error-message="telMessage"
+        />
+		  </van-cell-group>
     </div>
     <div class="footer-box">
       <div class="xy-wrapper">
-        <van-radio-group :value="radio" @change="onChange">
-          <van-radio name="1">
+        <van-radio-group  >
+          <van-radio use-icon-slot name="1" :value="radio" @change="changeRadio" @click="clickRadio">
             <div class="xy-box">
               <a href="" class="xy-text">《参赛协议》</a>
               我已阅读并接受
             </div>
+            <image
+              slot="icon"
+              :src=" radio === '1' ? icon.active : icon.normal "
+              class="img-icon"
+            />
           </van-radio>
         </van-radio-group>
       </div>
-      <van-button type="primary" size="large">提交</van-button>
+      <van-button type="primary" :disabled="submitFlag" size="large" @click="submitEnroll">提交</van-button>
     </div>
   </div>
 </template>
 
 <script>
-import EnrollForm from "@/components/enrollForm"
+import { mapGetters } from "vuex";
+import { showSuccess } from "@/util.js";
   export default {
     data () {
     	return {
-    		radio: '1'
+        radio: '0',
+        icon: {
+          normal: '/static/images/unchoose.png',
+          active: '/static/images/choose.png'
+        },
+        selfInfo:{
+          name:"",
+					idCard:"",
+					phone:""
+        },
+        memberInfo:{
+          name:"",
+					idCard:"",
+					phone:""
+        },
+        memberInfoShowFlag:false,
+        telMessage:'',
+        nameMessage:'',
+        idCardMessage:'',
     	}
     },
     components:{
-      EnrollForm
+      
     },
     onLoad: function() {
-      console.log("-----index-------onLoad-----------");
+      console.log("-----enroll-------onLoad-----------");
       console.log(this.$root.$mp.query);
-    
+      console.log(this.userInfo);
+      this.selfInfo={
+        name:this.userInfo.realName,
+        idCard:this.userInfo.cardId,
+        phone:this.userInfo.tel
+      }
+      let type=this.$root.$mp.query.type;
+      if(type>2){
+        this.memberInfoShowFlag=true;
+      }
+    },
+    mounted(){
+      console.log("-----enroll-------mounted-----------");
+      console.log(this.userInfo);
+      
+    },
+    computed:{
+      ...mapGetters([
+        'openId',
+        'userInfo'
+      ]),
+      submitFlag (){
+        return this.radio=='0'
+      }
     },
     methods: {
-      onChange () {
+      changeRadio (e) {
+        console.log("changeRadio"+e.mp.detail);
+      },
+      clickRadio (){
+        console.log("clickRadio");
+        this.radio=='0'?this.radio='1':this.radio='0';
+      },
+      submitEnroll (){
+        let params={
+          openId:this.openId,
+          competitionId:this.$root.$mp.query.competitionId,
+          competitionType:this.$root.$mp.query.type,
+          personnelList:[
+            this.selfInfo
+          ]
+        }
+        if(this.memberInfoShowFlag){
+          if(!this.telMessage && !this.nameMessage && !this.idCardMessage){
+            console.log("验证同伴信息通过");
+            params.personnelList.push(this.memberInfo);
 
+          }
+        }
+        
+        this.$fly.wxEntry(params).then((res)=> {
+          console.log(res)
+          if(res&&res.code=='1'){
+            showSuccess("报名比赛成功！")
+            let url="/pages/enrolled/main";
+              wx.switchTab({ url }) 
+          }
+        })
+
+      },
+      telChange (event) {
+        let val = event.mp.detail;
+        console.log("telChange"+val);
+        let message = '';
+        let reg=/^1(3|4|5|7|8)\d{9}$/;
+        if (val) {
+          if(val.length>=11){
+            if (reg.test(val)) {
+              message = '';
+            } else {
+              message = '您输入的手机号码有误';
+            }
+          }
+        } else {
+          message = '输入的手机号不能为空';
+        }
+        this.telMessage=message;
+        this.memberInfo.phone=val;
+      },
+      nameChange(event){
+        let val = event.mp.detail;
+        console.log("nameChange"+val);
+        let message = '';
+        let reg = /^[\u4e00-\u9fa5]{2,6}(·[\u4e00-\u9fa5]{2,6})*$/;
+        if (val) {
+          if (reg.test(val)) {
+            message = '';
+          } else {
+            message = '请输入的中文姓名';
+          }
+        } else {
+          message = '输入的姓名不能为空';
+        }
+        this.nameMessage=message;
+        this.memberInfo.name=val;
+      },
+      idCardChange(event){
+        let val = event.mp.detail;
+        console.log("idCardChange"+val);
+        let message = '';
+        let reg =  /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if (val) {
+          if (reg.test(val)) {
+            message = '';
+          } else {
+            message = '您输入的身份证有误';
+          }
+        } else {
+          message = '输入的身份证不能为空';
+        }
+        this.idCardMessage=message;
+        this.memberInfo.idCard=val;
       }
     }
   }
@@ -117,6 +314,10 @@ import EnrollForm from "@/components/enrollForm"
       height:60rpx;
       line-height:60rpx;
       margin:10rpx 0;
+    }
+    .img-icon{
+      width: 40rpx;
+      height: 40rpx;
     }
     .xy-box{
       font-size: @font-size-medium;

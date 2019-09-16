@@ -62,7 +62,7 @@
       console.log("-----index-------onLoad-----------");
       console.log(this.$root.$mp.query);
       this.id=this.$root.$mp.query.id;
-      
+      this.showEnrollTypeFlag=false;
     },
     methods: {
       init(id){
