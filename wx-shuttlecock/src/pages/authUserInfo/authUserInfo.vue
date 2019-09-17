@@ -12,9 +12,8 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex'
+  import { mapGetters,mapMutations } from 'vuex'
   import config from '@/config.js'
-import { resolve } from 'q';
   export default {
     data () {
     	return {
@@ -24,20 +23,25 @@ import { resolve } from 'q';
     },
     components:{
     },
+    ...mapGetters([
+      'openId',
+      'userInfo'
+    ]),
     mounted () {
       console.log("-----authUserInfo-------mounted-----------");
+      
     },
     onLoad: function() {
       console.log("-----authUserInfo-------onLoad-----------");
+    
     },
     methods: {
       //页面没有授权首先要弹出授权页面
       onGotUserInfo (e) {
-        // console.log(e.mp.detail.errMsg)
-         console.log(e.mp.detail.userInfo)
-        // console.log(e.mp.detail.rawData)
         let _this=this;
         let wx_userInfo=e.mp.detail.userInfo;
+        console.log(wx_userInfo);
+
         if(wx_userInfo){
           console.log("用户点击了允许");
           this.wxLogin().then(res=>{
@@ -48,6 +52,7 @@ import { resolve } from 'q';
                   _this.setOpenId(_this.openid);
                   //记录用户信息
                   _this.setUserInfo(wx_userInfo);
+                  wx.setStorageSync('wx_userInfo', wx_userInfo); //将wx_userInfo存入本地缓存
                   wx.switchTab({
                     url: '/pages/me/main'
                   })

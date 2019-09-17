@@ -59,9 +59,11 @@
     },
     onLoad: function() {
       console.log("------------onLoad-----------");
+      console.log(this.userInfo);
+      this.name=this.userInfo.realName;
+      this.cardId=this.userInfo.cardId;
       if(this.userInfo.realName && this.userInfo.cardId){
-        this.name=this.userInfo.realName;
-        this.cardId=this.userInfo.cardId;
+        
         this.titleText="修改个人信息";
         this.btnText="立即修改";
       }

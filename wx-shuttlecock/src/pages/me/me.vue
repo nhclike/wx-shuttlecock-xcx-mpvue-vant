@@ -40,6 +40,7 @@
   import {get,post,showSuccess,showModal} from '@/util'
   import { mapGetters, mapMutations } from 'vuex'
   import { saveWxUserPhone } from "@/api/wx"
+  import config from '@/config.js'
 
   export default {
     data () {
@@ -67,29 +68,58 @@
       console.log("------------userInfo------------");
       console.log(this.userInfo);
       let _this=this;
-      if(!this.openId){
-          let url="/pages/authUserInfo/main";
-          wx.redirectTo({ url })
-      }
-      else {
-         this.$fly.getUserInfoByOpenId({openId:this.openId}).then((res)=> {
-          console.log(res);
-          if(res&&res.data){
-            let self_userInfo={
-              tel:res.data.username,
-              realName:res.data.name,
-              cardId:res.data.idCard
-            };
-            console.log("根据openId获取的用户信息");
-            console.log(self_userInfo);
-            _this.setUserInfo(self_userInfo);
-          }
-          if(!_this.userInfo.tel){
-              let url="/pages/bindTel/main";
-              wx.redirectTo({ url })
+      wx.getSetting({
+        success:function (res) {
+          if(res.authSetting['scope.userInfo']){
+            console.log("用户已经授权");
+            console.log("_this.openId"+_this.openId);
+            var wx_userInfo = wx.getStorageSync('wx_userInfo'); //获取本地缓存中的wx_userInfo
+            if(wx_userInfo){
+              _this.setUserInfo(wx_userInfo);
             }
-        })
-      }
+            else{
+              console.log("没有获取到授权后缓存的用户信息");
+            }
+            console.log(_this.userInfo);
+            if(_this.openId){
+              _this.authControl();
+            }
+            else{
+              wx.login({
+                success:function(res){
+                  console.log("拿到wx.login返回值code");
+                  console.log(res.code);
+                  const APP_ID =config.wechat.appID;//输入小程序appid
+                  const APP_SECRET =config.wechat.appSecret;//输入小程序app_secret
+                  let code=res.code;
+                  wx.request({
+                    //获取openid接口
+                    url: `https://api.weixin.qq.com/sns/jscode2session?appid=${APP_ID}&secret=${APP_SECRET}&js_code=${code}&grant_type=authorization_code`,
+                    method:'GET',
+                    success:function(res){
+                      console.log("----jscode2session-----")
+                      console.log(res)
+                      _this.setOpenId(res.data.openid);
+                      console.log(_this.openId+"this.openId");
+                      _this.authControl();
+                    },
+                    fail:function(err){
+                    }
+                  })
+                }
+              });
+            }
+          }
+          else{
+            console.log("用户没有授权");
+            if(!_this.openId){
+                let url="/pages/authUserInfo/main";
+                wx.redirectTo({ url })
+            }
+          }
+        }
+      })
+      
     },
     methods: {
       onChange (event) {
@@ -98,6 +128,27 @@
       bindTel () {
           let url="/pages/bindTel/main";
           wx.navigateTo({ url })
+      },
+      authControl (){
+        if(this.openId){
+          this.$fly.getUserInfoByOpenId({openId:this.openId}).then((res)=> {
+            console.log(res);
+            if(res&&res.data){
+              let self_userInfo={
+                tel:res.data.username,
+                realName:res.data.name,
+                cardId:res.data.idCard
+              };
+              console.log("根据openId获取的用户信息");
+              console.log(self_userInfo);
+              this.setUserInfo(self_userInfo);
+            }
+            if(!this.userInfo.tel){
+                let url="/pages/bindTel/main";
+                wx.redirectTo({ url })
+              }
+          })
+        }
       },
       getPhoneNumber (e) {
         if ("getPhoneNumber:ok" != e.mp.detail.errMsg){
@@ -109,6 +160,7 @@
         }
       },
       ...mapMutations({
+        setOpenId:'SET_OPEN_ID',
         setUserInfo:'SET_USER_INFO'
       }),
       testDouBan () {

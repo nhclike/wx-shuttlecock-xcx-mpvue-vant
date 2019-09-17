@@ -50,8 +50,9 @@ export default {
     goToEnroll () {
       let url='';
       console.log("this.curEnrollId"+this.curEnrollId);
-      console.log("this.curEnrollId"+this.openId);
-      console.log("this.curEnrollId"+this.userInfo);
+      console.log("this.openId"+this.openId);
+      console.log("this.userInfo");
+      console.log(this.userInfo);
 
       if(!this.openId){
         url="/pages/authUserInfo/main";
@@ -59,7 +60,7 @@ export default {
       else if(!this.userInfo.tel){
         url="/pages/bindTel/main";
       }
-      else if(!this.userInfo.cardId){
+      else if(!this.userInfo.cardId || !this.userInfo.realName){
         url="/pages/perfectingInfo/main";
       }
       else{
