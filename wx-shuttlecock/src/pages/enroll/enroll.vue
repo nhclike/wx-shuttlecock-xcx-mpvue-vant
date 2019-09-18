@@ -1,23 +1,23 @@
 <template>
   <div class="container-enroll">
     <div class="raceInfo">
-      <div class="title">某某俱乐部羽毛球比赛</div>
+      <div class="title">{{competitionInfo.competitionName}}</div>
       <div class="item">
         <div class="label">时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;间</div>
-        <div class="content">2019-09-01</div>
+        <div class="content">{{competitionInfo.competitionStartDate}}</div>
       </div>
       <div class="item">
         <div class="label">地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点</div>
-        <div class="content">滨江羽毛球俱乐部中心</div>
+        <div class="content">{{competitionInfo.competitionSite}}</div>
       </div>
       <div class="item">
         <div class="label">比赛类型</div>
-        <div class="content">男女混双</div>
+        <div class="content">{{typeName}}</div>
       </div>
-      <div class="item">
+      <!-- <div class="item">
         <div class="label">报名要求</div>
         <div class="content">年龄25岁到30岁</div>
-      </div>
+      </div> -->
     </div>
     <div class="selfInfo">
       <div class="title-box">参赛者信息</div>
@@ -135,10 +135,12 @@ import { showSuccess } from "@/util.js";
 					idCard:"",
 					phone:""
         },
+        competitionInfo:{},
         memberInfoShowFlag:false,
         telMessage:'',
         nameMessage:'',
         idCardMessage:'',
+        
     	}
     },
     components:{
@@ -153,10 +155,19 @@ import { showSuccess } from "@/util.js";
         idCard:this.userInfo.cardId,
         phone:this.userInfo.tel
       }
+      this.memberInfo={
+        name:"",
+        idCard:"",
+        phone:""
+      }
       let type=this.$root.$mp.query.type;
       if(type>2){
         this.memberInfoShowFlag=true;
       }
+      else{
+        this.memberInfoShowFlag=false;
+      }
+      this.getWxCompetitionInfo();
     },
     mounted(){
       console.log("-----enroll-------mounted-----------");
@@ -170,6 +181,29 @@ import { showSuccess } from "@/util.js";
       ]),
       submitFlag (){
         return this.radio=='0'
+      },
+      typeName(){
+        let name=''
+        switch (this.$root.$mp.query.type) {
+          case "1":
+            name="男单"
+            break;
+          case "2":
+            name="女单"
+            break;
+          case "3":
+            name="男双"
+            break;  
+          case "4":
+            name="女双"
+            break;
+          case "5":
+            name="混双"
+            break;
+          default:
+            break;
+        }
+        return name;
       }
     },
     methods: {
@@ -179,6 +213,17 @@ import { showSuccess } from "@/util.js";
       clickRadio (){
         console.log("clickRadio");
         this.radio=='0'?this.radio='1':this.radio='0';
+      },
+      getWxCompetitionInfo(){
+        let params={
+          competitionId:this.$root.$mp.query.competitionId
+        }
+        this.$fly.getWxCompetitionInfoByCompetitionId(params).then((res)=> {
+          console.log(res)
+          if(res&&res.data){
+            this.competitionInfo=res.data;
+          }
+        })
       },
       submitEnroll (){
         let params={
@@ -211,7 +256,7 @@ import { showSuccess } from "@/util.js";
         let val = event.mp.detail;
         console.log("telChange"+val);
         let message = '';
-        let reg=/^1(3|4|5|7|8)\d{9}$/;
+        let reg=/^1(3|4|5|7|8|9)\d{9}$/;
         if (val) {
           if(val.length>=11){
             if (reg.test(val)) {

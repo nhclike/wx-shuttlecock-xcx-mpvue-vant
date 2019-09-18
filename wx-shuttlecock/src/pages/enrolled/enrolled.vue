@@ -6,37 +6,66 @@
       <div class="text">不去比比，怎么知道自己行不行？</div>
     </div>
     <div class="enroll-box" v-show="hasEnroll">
-      <RaceInfo></RaceInfo>
-      <RaceInfo></RaceInfo>  
-      <RaceInfo></RaceInfo>  
-      <RaceInfo></RaceInfo>  
-      <RaceInfo></RaceInfo>  
-      <RaceInfo></RaceInfo>  
-      <RaceInfo></RaceInfo>  
-      <RaceInfo></RaceInfo>  
-      <RaceInfo></RaceInfo>   
+      <EnrolledInfo :raceList=raceList></EnrolledInfo>
     </div>
   </div>
 </template>
 
 <script>
-import RaceInfo from "@/components/raceInfo"
+  import EnrolledInfo from "@/components/enrolledInfo"
+  import { mapGetters } from "vuex";
+
   export default {
     data () {
     	return {
-    		hasEnroll:false
+        hasEnroll:false,
+        raceList:[{
+          // competitionAppleNum: 15,
+          // competitionEndDate: "234234",
+          // competitionName: "24234",
+          // competitionSite: "23424",
+          // competitionStartDate: "23424",
+          // competitionState:'1'
+        }]
     	}
     },
     components:{
-      RaceInfo
+      EnrolledInfo
+    },
+    computed:{
+      ...mapGetters([
+        'openId',
+        'userInfo'
+      ]),
+    },
+    mounted () {
+      console.log("-----enrolled-------mounted-----------");
+    },
+    onLoad: function() {
+      console.log("-----enrolled-------onLoad-----------");
+      
+    },
+    onShow:function(){
+      console.log("---------enrolled ----onShow------");
+      if(this.openId){
+        this.init();
+      }
     },
     methods: {
-      onClickIcon () {
+      init(){
+        let _this=this;
+        let params={
+          openId:_this.openId
+        }
 
+        this.$fly.getWxMyEntryCompetition(params).then((res)=> {
+          console.log(res)
+          if(res&&res.data&&res.data.length>0){
+            _this.raceList=res.data;
+            _this.hasEnroll=true;
+          }
+        })
       },
-      onClickButton () {
-
-      }
     }
   }
 </script>

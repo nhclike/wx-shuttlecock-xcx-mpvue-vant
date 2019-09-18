@@ -23,4 +23,11 @@ export default {
     getWxCompetitionItem: (params) => request.post(`${host}/wx/competition/getWxCompetitionItem`, params),
     //小程序报名
     wxEntry: (params) => request.post(`${host}/wx/entry/wxEntry`, params),
+    //微信我报名的比赛
+    getWxMyEntryCompetition: (params) => request.post(`${host}/wx/competition/getWxMyEntryCompetition`, params),
+    //获得比赛信息(返回参数 ：competitionSite（地点），competitionStartDate（比赛时间）)
+    getWxCompetitionInfoByCompetitionId: (params) => request.post(`${host}/wx/competition/getWxCompetitionInfoByCompetitionId`, params),
+    //获得比赛人员信息(返回参数 ：competitionSite（地点），competitionStartDate（比赛时间）)
+    getEntryPersonnelList: (params) => request.post(`${host}/wx/entry/getEntryPersonnelList`, params),
+
 }

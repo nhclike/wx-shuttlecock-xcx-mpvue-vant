@@ -112,10 +112,8 @@
           }
           else{
             console.log("用户没有授权");
-            if(!_this.openId){
-                let url="/pages/authUserInfo/main";
-                wx.redirectTo({ url })
-            }
+            let url="/pages/authUserInfo/main";
+            wx.redirectTo({ url })
           }
         }
       })

@@ -2,6 +2,8 @@
     "pages": [
         "pages/index/main",
         "pages/enrolled/main",
+        "pages/enrolledDetail/main",
+
         "pages/enroll/main",
         "pages/me/main",
         "pages/raceCalendar/main",

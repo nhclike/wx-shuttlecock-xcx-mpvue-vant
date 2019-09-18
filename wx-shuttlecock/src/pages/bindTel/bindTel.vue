@@ -76,7 +76,7 @@
         let message = '';
         if (phone) {
           if(phone.length>=11){
-            if (/^1(3|4|5|7|8)\d{9}$/.test(phone)) {
+            if (/^1(3|4|5|7|8|9)\d{9}$/.test(phone)) {
               message = '';
             } else {
               message = '您输入的手机号码有误';
