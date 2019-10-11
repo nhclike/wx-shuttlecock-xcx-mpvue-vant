@@ -11,7 +11,9 @@
         "pages/bindTel/main",
         "pages/perfectingInfo/main",
         "pages/detail/main",
-        "pages/detailEnroll/main"
+        "pages/detailEnroll/main",
+        "pages/detailGroup/main"
+
 
     ],
     "window": {

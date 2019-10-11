@@ -29,5 +29,13 @@ export default {
     getWxCompetitionInfoByCompetitionId: (params) => request.post(`${host}/wx/competition/getWxCompetitionInfoByCompetitionId`, params),
     //获得比赛人员信息(返回参数 ：competitionSite（地点），competitionStartDate（比赛时间）)
     getEntryPersonnelList: (params) => request.post(`${host}/wx/entry/getEntryPersonnelList`, params),
+    //获得小组赛选手信息(返回参数 ：1：男单，2：女单，3：男双，4：女双，5：混双，6：团体赛)
+    getWxGrouptCompetitionDetails: (params) => request.post(`${host}/wx/competitionDetails/getWxGrouptCompetitionDetails`, params),
+    //获得小组对战信息
+    getWxGroupPlayerVSInfo: (params) => request.post(`${host}/wx/competitionDetails/getWxGroupPlayerVSInfo`, params),
+    //获得淘汰赛信息
+    getWxKnockoutCompetitionDetailsInfo: (params) => request.post(`${host}/wx/competitionDetails/getWxKnockoutCompetitionDetailsInfo`, params),
+    //获得积分详情
+    getIntegralInfo: (params) => request.post(`${host}/wx/competitionDetails/info/${params.id}`),
 
 }

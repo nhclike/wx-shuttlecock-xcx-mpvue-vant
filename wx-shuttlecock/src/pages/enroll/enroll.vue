@@ -109,14 +109,14 @@
           </van-radio>
         </van-radio-group>
       </div>
-      <van-button type="primary" :disabled="submitFlag" size="large" @click="submitEnroll">提交</van-button>
+      <van-button type="primary" :disabled="submitFlag" size="large" @click.stop.prevent="submitEnroll">提交</van-button>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { showSuccess } from "@/util.js";
+import { showSuccess ,showModal} from "@/util.js";
   export default {
     data () {
     	return {
@@ -241,15 +241,20 @@ import { showSuccess } from "@/util.js";
 
           }
         }
+        if(this.radio=='1'){
+          this.$fly.wxEntry(params).then((res)=> {
+            console.log(res)
+            if(res&&res.code=='1'){
+              showSuccess("报名比赛成功！")
+              let url="/pages/enrolled/main";
+                wx.switchTab({ url }) 
+            }
+          })
+        }
+        else{
+          showModal("系统提示","请阅读并接受参赛协议");
+        }
         
-        this.$fly.wxEntry(params).then((res)=> {
-          console.log(res)
-          if(res&&res.code=='1'){
-            showSuccess("报名比赛成功！")
-            let url="/pages/enrolled/main";
-              wx.switchTab({ url }) 
-          }
-        })
 
       },
       telChange (event) {
