@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "填写报名信息",
+  "usingComponents": {
+	  "van-field": "/static/vant/field/index",
+	  "van-radio-group": "/static/vant/radio-group/index",
+	  "van-radio": "/static/vant/radio/index"
+
+	}
+}

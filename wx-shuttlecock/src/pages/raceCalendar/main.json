@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "赛事日历",
+  "usingComponents": {
+	  "calendar": "plugin://calendar/calendar"
+
+	}
+}
