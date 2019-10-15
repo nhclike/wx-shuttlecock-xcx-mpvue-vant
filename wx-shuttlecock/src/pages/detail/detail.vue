@@ -1,6 +1,9 @@
 <template>
   <div class="box">
     <div class="box-content">
+      <div class="title">
+        {{name}}
+      </div>
       <RaceDetail :raceDetail=raceDetail></RaceDetail>
     </div>
     <div class="groupMatch">
@@ -9,10 +12,10 @@
       </div>
       <div class="group-box">
         <div class="group-item" v-for="(val,key) in groupInfo" :key="key">
-          <div>{{key}}</div>
+          <div class="type-title">{{key}}</div>
           <div class="table-wrapper">
             <div @click="toGroupDetail(key,index)" v-for="(item,index) in val" :key="index">
-              <div>第{{index+1}}组</div>
+              <div class="second-title">第{{index+1}}组</div>
               <VTable :groupData="item.groupPlayerInfoList"></VTable>
             </div>  
           </div>
@@ -25,7 +28,7 @@
       </div>
       <div class="card-wrapper"> 
         <div v-for="(item,index) in KnockoutInfo" :key="index">
-          <div>
+          <div class="second-title">
             第{{item.round}}轮
           </div>
           <div class="card-item">
@@ -45,11 +48,13 @@
   import RaceCard from "@/components/raceCard"
   import VTable from "@/components/table"
   import IntegralModal from "@/components/integralModal"
+  import { showModal } from "@/util";
 
   export default {
     data () {
     	return {
         id:'',
+        name:'',
         raceDetail:{},
         groupInfo:{},
         KnockoutInfo:[],
@@ -76,7 +81,7 @@
       console.log("-----detail-------onLoad-----------");
       console.log(this.$root.$mp.query);
       this.id=this.$root.$mp.query.id;
-      
+      this.name=this.$root.$mp.query.name;
     },
     methods: {
       init(id){
@@ -86,7 +91,8 @@
         this.$fly.getWxCompetitionDetail(params).then((res)=> {
           console.log(res)
           if(res&&res.data){
-            this.raceDetail=res.data;
+            let rdata=res.data;
+            this.raceDetail=rdata;
           }
         })
         this.$fly.getWxGrouptCompetitionDetails(params).then((res)=> {
@@ -108,6 +114,10 @@
       },
       showIntegralDetail(val){
         console.log(val);
+        if(val.status=='1'){
+          showModal("系统提示","当前比赛未开始");
+          return false;
+        }
         let params={
           id:val.id
         }
@@ -129,10 +139,51 @@
 </script>
 
 <style scoped lang="less" rel="stylesheet/less">
+  @import "./../../common/less/variable.less";
 
 .groupMatch,.eliminationCompetition{
-  padding: 0 20rpx;
+  .title{
+    height:70rpx;
+    line-height:70rpx;
+    color:@text-color-light;
+    background: @bg-color !important;
+    padding-left: 40rpx;
+    font-size: @font-size-large-x;
+  }
 }
 
+.box-content{
+  padding: 0 40rpx;
+  .title{
+    border-bottom: 1px solid #ddd;
+    height: 60rpx;
+    line-height: 60rpx;
+    color:@text-color-dark;
+    font-size: @font-size-large-x;
 
+  }
+}
+.group-item{
+  padding:0 40rpx;
+  .type-title{
+    font-size: @font-size-large;
+
+  }
+}
+.card-wrapper{
+   padding:0 20rpx;
+   .card-item{
+     max-height: 315rpx;
+     overflow-y: scroll;
+   }
+}
+
+.second-title{
+  padding-left: 20rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  color:@text-color-dark;
+  font-size: @font-size-large;
+
+}
 </style>

@@ -2,7 +2,7 @@
 	<div>
 		<div  :key="index" v-for="(item,index) in raceList">
 			<!-- <a :href="detailUrl"> -->
-				<div class="raceInfo" @click.stop="detailUrl(item.id,item.competitionState)">
+				<div class="raceInfo" @click.stop="detailUrl(item.id,item.competitionState,item.competitionName)">
 					<div class="race-wrapper">	
 						<div class="thumb-box" :style="{backgroundImage:'url(https://6d70-mpvue-test-demo-xiq0s-1259052527.tcb.qcloud.la/match.png?sign=62d5310c2ae3676e0273b5c41b5d0e01&t=1565749502)',backgroundSize:'180rpx 180rpx'}">
 							<!-- <img class="recomment" src="/static/images/recommend.png" alt=""> -->
@@ -60,13 +60,13 @@
      
     },
     methods:{
-			detailUrl(id,status){
+			detailUrl(id,status,name){
 				let url='';
 				if(status=='1'){
-					url= `/pages/detailEnroll/main?id=${id}`;
+					url= `/pages/detailEnroll/main?id=${id}&name=${name}`;
 				}
 				else{
-					url= `/pages/detail/main?id=${id}`;
+					url= `/pages/detail/main?id=${id}&name=${name}`;
 				}
 				wx.navigateTo({ url })
 

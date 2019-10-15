@@ -1,6 +1,9 @@
 <template>
   <div class="box">
     <div class="box-content">
+      <div class="title">
+        {{name}}
+      </div>
       <RaceDetail :raceDetail=raceDetail></RaceDetail> 
     </div>
     <div class="box-footer">
@@ -47,6 +50,7 @@
     	return {
         showEnrollTypeFlag:false,
         id:'',
+        name:'',
         raceDetail:{},
         types:[]
     	}
@@ -62,6 +66,7 @@
       console.log("-----index-------onLoad-----------");
       console.log(this.$root.$mp.query);
       this.id=this.$root.$mp.query.id;
+      this.name=this.$root.$mp.query.name;
       this.showEnrollTypeFlag=false;
     },
     methods: {
@@ -109,6 +114,16 @@
 </script>
 
 <style scoped lang="less" rel="stylesheet/less">
+  @import "./../../common/less/variable.less";
 
-
+.box-content{
+  padding: 0 40rpx 100rpx 40rpx;
+  .title{
+    border-bottom: 1px solid #ddd;
+    height: 60rpx;
+    line-height: 60rpx;
+    color:@text-color-dark;
+    font-size:@font-size-large-x;
+  }
+}
 </style>

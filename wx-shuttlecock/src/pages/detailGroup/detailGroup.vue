@@ -1,9 +1,9 @@
 <template>
   <div class="box">
-    <div>
+    <div class="title">
       {{competitionType}}
     </div>
-    <div>
+    <div class="second-title">
       第{{group}}组
     </div>
     <div v-for="(item,index) in groupRaceList" :key="item.id">
@@ -17,7 +17,7 @@
 <script>
   import RaceCard from "@/components/raceCard"
   import IntegralModal from "@/components/integralModal"
-
+  import { showModal } from "@/util";
   export default {
     data () {
     	return {
@@ -64,6 +64,10 @@
       },
       showIntegralDetail(val){
         console.log(val);
+        if(val.status=='1'){
+          showModal("系统提示","当前比赛未开始");
+          return false;
+        }
         let params={
           id:val.id
         }
@@ -83,9 +87,27 @@
 </script>
 
 <style scoped lang="less" rel="stylesheet/less">
-
+  @import "./../../common/less/variable.less";
 .box{
-  padding: 0 20rpx;
+  padding: 20rpx;
+
+}
+.title{
+  height:70rpx;
+  line-height:70rpx;
+  color:@text-color-light;
+  background: @bg-color !important;
+  padding-left: 20rpx;
+  font-size: @font-size-large-x;
+
+}
+.second-title{
+  padding-left: 20rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  color:@text-color-dark;
+  font-size: @font-size-large;
+
 }
 
 </style>

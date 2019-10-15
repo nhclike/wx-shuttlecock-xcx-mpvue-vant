@@ -62,6 +62,7 @@ export default {
 
 .gen-table {
   border: 0px solid darkgray;
+  font-size: @font-size-medium-x ;
   .gen-thead{
     .gen-tr{
       background: @theme-color-light;

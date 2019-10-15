@@ -1,9 +1,11 @@
 <template>
   <div class="box">
     <div class="box-wrapper">
-			<div class="item" v-for="(value, key, index) in raceDetail" :key="index">
-				<b>{{key}}</b>
-    		<span>{{value}}</span>
+			<div class="detailInfo" v-for="(value, key, index) in raceDetail" :key="index">
+				<div class="item"> 
+					<b>{{key}}</b>
+    			<span>{{value}}</span>
+				</div>
 			</div>
 			<!-- <div class="item">
     		<b>比赛名称：</b>
@@ -68,7 +70,7 @@ export default {
   @import "./../common/less/variable.less";
 	.box{
 		.box-wrapper{
-			margin: 40rpx;
+			margin: 20rpx 0;
 			.item{
 				display: flex;
 				font-size: @font-size-medium-x;
